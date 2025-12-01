@@ -1,0 +1,593 @@
++ echo '=== 11-30 low precision prefill SLURM_NODEID 0'
+=== 11-30 low precision prefill SLURM_NODEID 0
++ export SGLANG_HEALTH_CHECK_TIMEOUT=3600
++ SGLANG_HEALTH_CHECK_TIMEOUT=3600
++ [[ 0 -lt 1 ]]
++ export TORCH_DISTRIBUTED_DEFAULT_TIMEOUT=1800
++ TORCH_DISTRIBUTED_DEFAULT_TIMEOUT=1800
++ export SGLANG_TORCH_PROFILER_DIR=/base_dir/../prefill_torch_profiler
++ SGLANG_TORCH_PROFILER_DIR=/base_dir/../prefill_torch_profiler
++ mkdir -p /base_dir/../prefill_torch_profiler
++ export SGLANG_DUMPER_DIR=/base_dir/../prefill_sglang_dump
++ SGLANG_DUMPER_DIR=/base_dir/../prefill_sglang_dump
++ mkdir -p /base_dir/../prefill_sglang_dump
++ export SGLANG_EXPERT_DISTRIBUTION_RECORDER_DIR=/base_dir/../prefill_sglang_expert_distribution_recorder
++ SGLANG_EXPERT_DISTRIBUTION_RECORDER_DIR=/base_dir/../prefill_sglang_expert_distribution_recorder
++ mkdir -p /base_dir/../prefill_sglang_expert_distribution_recorder
++ export FLASHINFER_WORKSPACE_BASE=/base_dir/../prefill_flashinfer_workspace_base
++ FLASHINFER_WORKSPACE_BASE=/base_dir/../prefill_flashinfer_workspace_base
++ mkdir -p /base_dir/../prefill_flashinfer_workspace_base
++ export SGL_DG_CACHE_DIR=/base_dir/../prefill_deepgemm_cache
++ SGL_DG_CACHE_DIR=/base_dir/../prefill_deepgemm_cache
++ mkdir -p /base_dir/../prefill_deepgemm_cache
++ SERVER_PID=1000370
++ DYN_SKIP_SGLANG_LOG_FORMATTING=1
++ [[ 0 -eq 0 ]]
++ SGLANG_DEEPEP_NUM_MAX_DISPATCH_TOKENS_PER_RANK=1024
++ DATASET_DIR=/base_dir/datasets
++ SGLANG_NVFP4_CKPT_FP8_GEMM_IN_ATTN=1
++ DATASET_FILE=/base_dir/datasets/ShareGPT_V3_unfiltered_cleaned_split.json
++ SGLANG_PER_TOKEN_GROUP_QUANT_8BIT_V2=1
++ [[ ! -f /base_dir/datasets/ShareGPT_V3_unfiltered_cleaned_split.json ]]
++ SGL_JIT_DEEPGEMM_PRECOMPILE=0
++ MC_TE_METRIC=true
++ SGLANG_DISAGGREGATION_HEARTBEAT_MAX_FAILURE=100000
++ SGLANG_DISAGGREGATION_BOOTSTRAP_TIMEOUT=100000
++ SGLANG_DISAGGREGATION_WAITING_TIMEOUT=100000
++ SGLANG_HACK_SEQ_BOOTSTRAP_ROOM=1
++ SGLANG_MOONCAKE_CUSTOM_MEM_POOL=True
++ MC_FORCE_MNNVL=1
++ NCCL_MNNVL_ENABLE=1
++ NCCL_CUMEM_ENABLE=1
++ SGLANG_USE_MESSAGE_QUEUE_BROADCASTER=0
++ SGLANG_DISABLE_TP_MEMORY_INBALANCE_CHECK=1
++ PYTHONUNBUFFERED=1
++ python3 -m sglang.launch_server --disaggregation-mode prefill --host 0.0.0.0 --port 30000 --max-running-requests 768 --context-length 4224 --disable-radix-cache --disable-shared-experts-fusion --watchdog-timeout 1000000 --disable-chunked-prefix-cache --attention-backend trtllm_mla --kv-cache-dtype fp8_e4m3 --enable-single-batch-overlap --tp-size 4 --dp-size 4 --ep-size 4 --enable-dp-attention --moe-dense-tp-size 1 --enable-dp-lm-head --chunked-prefill-size 131072 --eplb-algorithm deepseek --model-path nvidia/DeepSeek-R1-0528-FP4 --trust-remote-code --disable-cuda-graph --mem-fraction-static 0.84 --max-total-tokens 131072 --max-prefill-tokens 32768 --load-balance-method round_robin --quantization modelopt_fp4 --moe-runner-backend flashinfer_cutlass --disaggregation-bootstrap-port 30001 --dist-init-addr 10.52.103.107:20000 --dist-timeout 3600 --nnodes 1 --node-rank 0
++ echo 'Using existing dataset file at /base_dir/datasets/ShareGPT_V3_unfiltered_cleaned_split.json'
+Using existing dataset file at /base_dir/datasets/ShareGPT_V3_unfiltered_cleaned_split.json
++ wait_until_ready http://10.52.103.107:30000 1000370
++ local SERVER_URL=http://10.52.103.107:30000
++ local SERVER_PID=1000370
++ true
+++ curl -s -o /dev/null -w '%{http_code}' http://10.52.103.107:30000/health
+++ echo 000
++ status_code=000000
++ '[' 000000 -eq 200 ']'
++ '[' -n 1000370 ']'
++ kill -0 1000370
++ sleep 30
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_JIT_DEEPGEMM_PRECOMPILE is deprecated, please use SGLANG_JIT_DEEPGEMM_PRECOMPILE
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_DG_CACHE_DIR is deprecated, please use SGLANG_DG_CACHE_DIR
+  warnings.warn(
+[2025-11-30 09:15:55] WARNING server_args.py:1329: TensorRT-LLM MLA only supports page_size of 32 or 64, changing page_size from None to 64.
+[2025-11-30 09:15:55] WARNING server_args.py:1453: DP attention is enabled. The chunked prefill size is adjusted to 32768 to avoid MoE kernel issues. 
+[2025-11-30 09:15:55] WARNING server_args.py:1787: Cuda graph is disabled for prefill server
+[2025-11-30 09:15:55] server_args=ServerArgs(model_path='nvidia/DeepSeek-R1-0528-FP4', tokenizer_path='nvidia/DeepSeek-R1-0528-FP4', tokenizer_mode='auto', tokenizer_worker_num=1, skip_tokenizer_init=False, load_format='auto', model_loader_extra_config='{}', trust_remote_code=True, context_length=4224, is_embedding=False, enable_multimodal=None, revision=None, model_impl='auto', host='0.0.0.0', port=30000, fastapi_root_path='', grpc_mode=False, skip_server_warmup=False, warmups=None, nccl_port=None, checkpoint_engine_wait_weights_before_ready=False, dtype='auto', quantization='modelopt_fp4', quantization_param_path=None, kv_cache_dtype='fp8_e4m3', enable_fp32_lm_head=False, modelopt_quant=None, modelopt_checkpoint_restore_path=None, modelopt_checkpoint_save_path=None, modelopt_export_path=None, quantize_and_serve=False, mem_fraction_static=0.84, max_running_requests=768, max_queued_requests=None, max_total_tokens=131072, chunked_prefill_size=32768, max_prefill_tokens=32768, schedule_policy='fcfs', enable_priority_scheduling=False, abort_on_priority_when_disabled=False, schedule_low_priority_values_first=False, priority_scheduling_preemption_threshold=10, schedule_conservativeness=0.3, page_size=64, hybrid_kvcache_ratio=None, swa_full_tokens_ratio=0.8, disable_hybrid_swa_memory=False, radix_eviction_policy='lru', device='cuda', tp_size=4, pp_size=1, pp_max_micro_batch_size=None, stream_interval=1, stream_output=False, random_seed=482623870, constrained_json_whitespace_pattern=None, constrained_json_disable_any_whitespace=False, watchdog_timeout=1000000.0, dist_timeout=3600, download_dir=None, base_gpu_id=0, gpu_id_step=1, sleep_on_idle=False, mm_process_config={}, log_level='info', log_level_http=None, log_requests=False, log_requests_level=2, crash_dump_folder=None, show_time_cost=False, enable_metrics=False, enable_metrics_for_all_schedulers=False, tokenizer_metrics_custom_labels_header='x-custom-labels', tokenizer_metrics_allowed_custom_labels=None, bucket_time_to_first_token=None, bucket_inter_token_latency=None, bucket_e2e_request_latency=None, collect_tokens_histogram=False, prompt_tokens_buckets=None, generation_tokens_buckets=None, gc_warning_threshold_secs=0.0, decode_log_interval=40, enable_request_time_stats_logging=False, kv_events_config=None, enable_trace=False, otlp_traces_endpoint='localhost:4317', export_metrics_to_file=False, export_metrics_to_file_dir=None, api_key=None, served_model_name='nvidia/DeepSeek-R1-0528-FP4', weight_version='default', chat_template=None, completion_template=None, file_storage_path='sglang_storage', enable_cache_report=False, reasoning_parser=None, tool_call_parser=None, tool_server=None, sampling_defaults='model', dp_size=4, load_balance_method='round_robin', load_watch_interval=0.1, prefill_round_robin_balance=False, dist_init_addr='10.52.103.107:20000', nnodes=1, node_rank=0, json_model_override_args='{}', preferred_sampling_params=None, enable_lora=None, max_lora_rank=None, lora_target_modules=None, lora_paths=None, max_loaded_loras=None, max_loras_per_batch=8, lora_eviction_policy='lru', lora_backend='csgmv', max_lora_chunk_size=16, attention_backend='trtllm_mla', decode_attention_backend=None, prefill_attention_backend=None, sampling_backend='flashinfer', grammar_backend='xgrammar', mm_attention_backend=None, nsa_prefill_backend='flashmla_sparse', nsa_decode_backend='fa3', speculative_algorithm=None, speculative_draft_model_path=None, speculative_draft_model_revision=None, speculative_draft_load_format=None, speculative_num_steps=None, speculative_eagle_topk=None, speculative_num_draft_tokens=None, speculative_accept_threshold_single=1.0, speculative_accept_threshold_acc=1.0, speculative_token_map=None, speculative_attention_mode='prefill', speculative_moe_runner_backend=None, speculative_ngram_min_match_window_size=1, speculative_ngram_max_match_window_size=12, speculative_ngram_min_bfs_breadth=1, speculative_ngram_max_bfs_breadth=10, speculative_ngram_match_type='BFS', speculative_ngram_branch_length=18, speculative_ngram_capacity=10000000, ep_size=4, moe_a2a_backend='none', moe_runner_backend='flashinfer_cutlass', flashinfer_mxfp4_moe_precision='default', enable_flashinfer_allreduce_fusion=False, deepep_mode='auto', ep_num_redundant_experts=0, ep_dispatch_algorithm='static', init_expert_location='trivial', enable_eplb=False, eplb_algorithm='deepseek', eplb_rebalance_num_iterations=1000, eplb_rebalance_layers_per_chunk=None, eplb_min_rebalancing_utilization_threshold=1.0, expert_distribution_recorder_mode=None, expert_distribution_recorder_buffer_size=1000, enable_expert_distribution_metrics=False, deepep_config=None, moe_dense_tp_size=1, elastic_ep_backend=None, mooncake_ib_device=None, max_mamba_cache_size=None, mamba_ssm_dtype='float32', mamba_full_memory_ratio=0.9, enable_hierarchical_cache=False, hicache_ratio=2.0, hicache_size=0, hicache_write_policy='write_through', hicache_io_backend='kernel', hicache_mem_layout='layer_first', hicache_storage_backend=None, hicache_storage_prefetch_policy='best_effort', hicache_storage_backend_extra_config=None, enable_lmcache=False, kt_weight_path=None, kt_method='AMXINT4', kt_cpuinfer=None, kt_threadpool_count=2, kt_num_gpu_experts=None, kt_max_deferred_experts_per_token=None, enable_double_sparsity=False, ds_channel_config_path=None, ds_heavy_channel_num=32, ds_heavy_token_num=256, ds_heavy_channel_type='qk', ds_sparse_decode_threshold=4096, cpu_offload_gb=0, offload_group_size=-1, offload_num_in_group=1, offload_prefetch_step=1, offload_mode='cpu', multi_item_scoring_delimiter=None, disable_radix_cache=True, cuda_graph_max_bs=512, cuda_graph_bs=[1, 2, 4, 8, 12, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], disable_cuda_graph=True, disable_cuda_graph_padding=False, enable_profile_cuda_graph=False, enable_cudagraph_gc=False, enable_layerwise_nvtx_marker=False, enable_nccl_nvls=False, enable_symm_mem=False, disable_flashinfer_cutlass_moe_fp4_allgather=False, enable_tokenizer_batch_encode=False, disable_tokenizer_batch_decode=False, disable_outlines_disk_cache=False, disable_custom_all_reduce=False, enable_mscclpp=False, enable_torch_symm_mem=False, disable_overlap_schedule=False, enable_mixed_chunk=False, enable_dp_attention=True, enable_dp_lm_head=True, enable_two_batch_overlap=False, enable_single_batch_overlap=True, tbo_token_distribution_threshold=0.48, enable_torch_compile=False, enable_piecewise_cuda_graph=False, torch_compile_max_bs=32, piecewise_cuda_graph_max_tokens=4096, piecewise_cuda_graph_tokens=[4, 8, 12, 16, 20, 24, 28, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 352, 384, 416, 448, 480, 512, 640, 768, 896, 1024, 1152, 1280, 1408, 1536, 1664, 1792, 1920, 2048, 2176, 2304, 2432, 2560, 2688, 2816, 2944, 3072, 3200, 3328, 3456, 3584, 3712, 3840, 3968, 4096], piecewise_cuda_graph_compiler='eager', torchao_config='', enable_nan_detection=False, enable_p2p_check=False, triton_attention_reduce_in_fp32=False, triton_attention_num_kv_splits=8, triton_attention_split_tile_size=None, num_continuous_decode_steps=1, delete_ckpt_after_loading=False, enable_memory_saver=False, enable_weights_cpu_backup=False, enable_draft_weights_cpu_backup=False, allow_auto_truncate=False, enable_custom_logit_processor=False, flashinfer_mla_disable_ragged=False, disable_shared_experts_fusion=True, disable_chunked_prefix_cache=True, disable_fast_image_processor=False, keep_mm_feature_on_device=False, enable_return_hidden_states=False, scheduler_recv_interval=1, numa_node=None, enable_deterministic_inference=False, rl_on_policy_target=None, enable_attn_tp_input_scattered=False, enable_nsa_prefill_context_parallel=False, enable_dynamic_batch_tokenizer=False, dynamic_batch_tokenizer_batch_size=32, dynamic_batch_tokenizer_batch_timeout=0.002, debug_tensor_dump_output_folder=None, debug_tensor_dump_layers=None, debug_tensor_dump_input_file=None, debug_tensor_dump_inject=False, disaggregation_mode='prefill', disaggregation_transfer_backend='mooncake', disaggregation_bootstrap_port=30001, disaggregation_decode_tp=4, disaggregation_decode_dp=4, disaggregation_prefill_pp=1, disaggregation_ib_device=None, disaggregation_decode_enable_offload_kvcache=False, num_reserved_decode_tokens=512, disaggregation_decode_polling_interval=1, custom_weight_loader=[], weight_loader_disable_mmap=False, remote_instance_weight_loader_seed_instance_ip=None, remote_instance_weight_loader_seed_instance_service_port=None, remote_instance_weight_loader_send_weights_group_ports=None, enable_pdmux=False, pdmux_config_path=None, sm_group_num=8, mm_max_concurrent_calls=32, mm_per_request_timeout=10.0, enable_broadcast_mm_inputs_process=False, decrypted_config_file=None, decrypted_draft_config_file=None, mm_enable_dp_encoder=False, hooks=None)
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_JIT_DEEPGEMM_PRECOMPILE is deprecated, please use SGLANG_JIT_DEEPGEMM_PRECOMPILE
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_DG_CACHE_DIR is deprecated, please use SGLANG_DG_CACHE_DIR
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_JIT_DEEPGEMM_PRECOMPILE is deprecated, please use SGLANG_JIT_DEEPGEMM_PRECOMPILE
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_DG_CACHE_DIR is deprecated, please use SGLANG_DG_CACHE_DIR
+  warnings.warn(
+[2025-11-30 09:15:56] Using default HuggingFace chat template with detected content format: string
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_JIT_DEEPGEMM_PRECOMPILE is deprecated, please use SGLANG_JIT_DEEPGEMM_PRECOMPILE
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_DG_CACHE_DIR is deprecated, please use SGLANG_DG_CACHE_DIR
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_JIT_DEEPGEMM_PRECOMPILE is deprecated, please use SGLANG_JIT_DEEPGEMM_PRECOMPILE
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_DG_CACHE_DIR is deprecated, please use SGLANG_DG_CACHE_DIR
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_JIT_DEEPGEMM_PRECOMPILE is deprecated, please use SGLANG_JIT_DEEPGEMM_PRECOMPILE
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_DG_CACHE_DIR is deprecated, please use SGLANG_DG_CACHE_DIR
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_JIT_DEEPGEMM_PRECOMPILE is deprecated, please use SGLANG_JIT_DEEPGEMM_PRECOMPILE
+  warnings.warn(
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_DG_CACHE_DIR is deprecated, please use SGLANG_DG_CACHE_DIR
+  warnings.warn(
++ true
+++ curl -s -o /dev/null -w '%{http_code}' http://10.52.103.107:30000/health
+++ echo 000
++ status_code=000000
++ '[' 000000 -eq 200 ']'
++ '[' -n 1000370 ']'
++ kill -0 1000370
++ sleep 30
+[2025-11-30 09:16:09 DP2 TP2 EP2] Init torch distributed begin.
+[2025-11-30 09:16:09 DP0 TP0 EP0] Init torch distributed begin.
+[2025-11-30 09:16:09 DP1 TP1 EP1] Init torch distributed begin.
+[2025-11-30 09:16:10 DP3 TP3 EP3] Init torch distributed begin.
+[Gloo] Rank [Gloo] Rank 1[Gloo] Rank 0[Gloo] Rank  is connected to 2 is connected to 33 is connected to 3 is connected to  peer ranks. 3 peer ranks. 3Expected number of connected peer ranks is :  peer ranks. Expected number of connected peer ranks is :  peer ranks. 3Expected number of connected peer ranks is : 3Expected number of connected peer ranks is : 
+3
+3
+
+[Gloo] Rank 0 is connected to [Gloo] Rank 32[Gloo] Rank  peer ranks.  is connected to [Gloo] Rank 1Expected number of connected peer ranks is : 33 is connected to 3 peer ranks.  is connected to 3
+Expected number of connected peer ranks is : 3 peer ranks. 3 peer ranks. Expected number of connected peer ranks is : 
+Expected number of connected peer ranks is : 33
+
+[2025-11-30 09:16:10 DP0 TP0 EP0] sglang is using nccl==2.27.3
+[Gloo] Rank [Gloo] Rank 00 is connected to  is connected to 00 peer ranks.  peer ranks. Expected number of connected peer ranks is : Expected number of connected peer ranks is : 00
+
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[2025-11-30 09:16:11 DP3 TP3 EP3] Init torch distributed ends. mem usage=1.11 GB
+[2025-11-30 09:16:11 DP0 TP0 EP0] Init torch distributed ends. mem usage=1.11 GB
+[2025-11-30 09:16:11 DP2 TP2 EP2] Init torch distributed ends. mem usage=1.11 GB
+[2025-11-30 09:16:11 DP1 TP1 EP1] Init torch distributed ends. mem usage=1.11 GB
+[2025-11-30 09:16:12 DP3 TP3 EP3] Ignore import error when loading sglang.srt.models.mindspore: name 'ms' is not defined
+[2025-11-30 09:16:12 DP2 TP2 EP2] Ignore import error when loading sglang.srt.models.mindspore: name 'ms' is not defined
+[2025-11-30 09:16:12 DP0 TP0 EP0] Ignore import error when loading sglang.srt.models.mindspore: name 'ms' is not defined
+[2025-11-30 09:16:12 DP1 TP1 EP1] Ignore import error when loading sglang.srt.models.mindspore: name 'ms' is not defined
+[2025-11-30 09:16:14 DP2 TP2 EP2] Load weight begin. avail mem=182.15 GB
+[2025-11-30 09:16:14 DP3 TP3 EP3] Load weight begin. avail mem=182.16 GB
+[2025-11-30 09:16:14 DP3 TP3 EP3] Using ModelOptModelLoader due to ModelOpt quantization config.
+[2025-11-30 09:16:14 DP2 TP2 EP2] Using ModelOptModelLoader due to ModelOpt quantization config.
+[2025-11-30 09:16:14 DP3 TP3 EP3] ModelOptModelLoader: Loading base model...
+[2025-11-30 09:16:14 DP2 TP2 EP2] ModelOptModelLoader: Loading base model...
+[2025-11-30 09:16:14 DP0 TP0 EP0] Load weight begin. avail mem=182.15 GB
+[2025-11-30 09:16:14 DP0 TP0 EP0] Using ModelOptModelLoader due to ModelOpt quantization config.
+[2025-11-30 09:16:14 DP0 TP0 EP0] ModelOptModelLoader: Loading base model...
+[2025-11-30 09:16:14 DP1 TP1 EP1] Load weight begin. avail mem=182.15 GB
+[2025-11-30 09:16:14 DP1 TP1 EP1] Using ModelOptModelLoader due to ModelOpt quantization config.
+[2025-11-30 09:16:14 DP1 TP1 EP1] ModelOptModelLoader: Loading base model...
+[2025-11-30 09:16:14 DP2 TP2 EP2] Model is already quantized, loading directly...
+[2025-11-30 09:16:14 DP3 TP3 EP3] Model is already quantized, loading directly...
+[2025-11-30 09:16:14 DP0 TP0 EP0] Model is already quantized, loading directly...
+[2025-11-30 09:16:14 DP1 TP1 EP1] Model is already quantized, loading directly...
+[2025-11-30 09:16:14 DP2 TP2 EP2] Detected nvfp4 checkpoint. Please note that the format is experimental and subject to change.
+[2025-11-30 09:16:14 DP1 TP1 EP1] Detected nvfp4 checkpoint. Please note that the format is experimental and subject to change.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected nvfp4 checkpoint. Please note that the format is experimental and subject to change.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP3 TP3 EP3] Detected nvfp4 checkpoint. Please note that the format is experimental and subject to change.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Using model weights format ['*.safetensors']
+Loading safetensors checkpoint shards:   0% Completed | 0/163 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:   3% Completed | 5/163 [00:00<00:03, 42.57it/s]
+Loading safetensors checkpoint shards:   6% Completed | 10/163 [00:00<00:08, 18.46it/s]
+Loading safetensors checkpoint shards:   8% Completed | 13/163 [00:00<00:11, 13.50it/s]
+Loading safetensors checkpoint shards:   9% Completed | 15/163 [00:01<00:17,  8.69it/s]
+Loading safetensors checkpoint shards:  10% Completed | 17/163 [00:01<00:15,  9.35it/s]
+Loading safetensors checkpoint shards:  12% Completed | 19/163 [00:01<00:18,  7.78it/s]
+Loading safetensors checkpoint shards:  12% Completed | 20/163 [00:02<00:19,  7.46it/s]
+Loading safetensors checkpoint shards:  13% Completed | 21/163 [00:02<00:19,  7.13it/s]
+Loading safetensors checkpoint shards:  13% Completed | 22/163 [00:02<00:21,  6.71it/s]
+Loading safetensors checkpoint shards:  14% Completed | 23/163 [00:02<00:23,  6.04it/s]
+Loading safetensors checkpoint shards:  15% Completed | 24/163 [00:02<00:23,  5.97it/s]
+Loading safetensors checkpoint shards:  15% Completed | 25/163 [00:02<00:21,  6.29it/s]
+Loading safetensors checkpoint shards:  16% Completed | 26/163 [00:03<00:21,  6.36it/s]
+Loading safetensors checkpoint shards:  17% Completed | 27/163 [00:03<00:21,  6.32it/s]
+Loading safetensors checkpoint shards:  17% Completed | 28/163 [00:03<00:19,  6.80it/s]
+Loading safetensors checkpoint shards:  18% Completed | 29/163 [00:03<00:19,  6.71it/s]
+Loading safetensors checkpoint shards:  19% Completed | 31/163 [00:03<00:15,  8.40it/s]
+Loading safetensors checkpoint shards:  20% Completed | 32/163 [00:03<00:16,  7.78it/s]
+Loading safetensors checkpoint shards:  20% Completed | 33/163 [00:04<00:20,  6.50it/s]
+Loading safetensors checkpoint shards:  21% Completed | 34/163 [00:04<00:20,  6.21it/s]
+Loading safetensors checkpoint shards:  21% Completed | 35/163 [00:04<00:19,  6.59it/s]
+Loading safetensors checkpoint shards:  22% Completed | 36/163 [00:04<00:23,  5.44it/s]
+Loading safetensors checkpoint shards:  23% Completed | 37/163 [00:04<00:24,  5.13it/s]
+Loading safetensors checkpoint shards:  23% Completed | 38/163 [00:05<00:26,  4.69it/s]
+Loading safetensors checkpoint shards:  24% Completed | 39/163 [00:05<00:26,  4.64it/s]
+Loading safetensors checkpoint shards:  25% Completed | 40/163 [00:05<00:27,  4.54it/s]
+Loading safetensors checkpoint shards:  25% Completed | 41/163 [00:05<00:28,  4.24it/s]
+Loading safetensors checkpoint shards:  26% Completed | 43/163 [00:06<00:24,  4.82it/s]
+Loading safetensors checkpoint shards:  27% Completed | 44/163 [00:06<00:26,  4.55it/s]
+Loading safetensors checkpoint shards:  28% Completed | 45/163 [00:06<00:25,  4.55it/s]
+Loading safetensors checkpoint shards:  28% Completed | 46/163 [00:06<00:25,  4.53it/s]
+Loading safetensors checkpoint shards:  29% Completed | 47/163 [00:07<00:25,  4.56it/s]
+Loading safetensors checkpoint shards:  29% Completed | 48/163 [00:07<00:24,  4.66it/s]
+Loading safetensors checkpoint shards:  30% Completed | 49/163 [00:07<00:25,  4.48it/s]
+Loading safetensors checkpoint shards:  31% Completed | 50/163 [00:07<00:23,  4.78it/s]
+Loading safetensors checkpoint shards:  31% Completed | 51/163 [00:07<00:23,  4.77it/s]
+Loading safetensors checkpoint shards:  32% Completed | 52/163 [00:08<00:21,  5.26it/s]
+Loading safetensors checkpoint shards:  33% Completed | 53/163 [00:08<00:21,  5.03it/s]
+Loading safetensors checkpoint shards:  33% Completed | 54/163 [00:08<00:21,  4.99it/s]
+Loading safetensors checkpoint shards:  34% Completed | 55/163 [00:08<00:19,  5.64it/s]
+Loading safetensors checkpoint shards:  34% Completed | 56/163 [00:08<00:19,  5.55it/s]
+Loading safetensors checkpoint shards:  35% Completed | 57/163 [00:09<00:20,  5.27it/s]
+Loading safetensors checkpoint shards:  36% Completed | 58/163 [00:09<00:20,  5.03it/s]
+Loading safetensors checkpoint shards:  36% Completed | 59/163 [00:09<00:21,  4.86it/s]
+Loading safetensors checkpoint shards:  37% Completed | 60/163 [00:09<00:22,  4.56it/s]
+Loading safetensors checkpoint shards:  37% Completed | 61/163 [00:09<00:22,  4.58it/s]
+Loading safetensors checkpoint shards:  38% Completed | 62/163 [00:10<00:19,  5.23it/s]
+Loading safetensors checkpoint shards:  39% Completed | 63/163 [00:10<00:20,  4.94it/s]
+Loading safetensors checkpoint shards:  39% Completed | 64/163 [00:10<00:20,  4.76it/s]
+Loading safetensors checkpoint shards:  40% Completed | 65/163 [00:10<00:22,  4.44it/s]
+Loading safetensors checkpoint shards:  40% Completed | 66/163 [00:11<00:23,  4.18it/s]
+Loading safetensors checkpoint shards:  41% Completed | 67/163 [00:11<00:21,  4.40it/s]
+Loading safetensors checkpoint shards:  42% Completed | 68/163 [00:11<00:26,  3.58it/s]
+Loading safetensors checkpoint shards:  43% Completed | 70/163 [00:11<00:17,  5.42it/s]
+Loading safetensors checkpoint shards:  44% Completed | 71/163 [00:12<00:18,  4.89it/s]
+Loading safetensors checkpoint shards:  44% Completed | 72/163 [00:12<00:18,  4.93it/s]
+Loading safetensors checkpoint shards:  45% Completed | 73/163 [00:12<00:19,  4.58it/s]
+Loading safetensors checkpoint shards:  45% Completed | 74/163 [00:12<00:20,  4.36it/s]
+Loading safetensors checkpoint shards:  47% Completed | 76/163 [00:13<00:16,  5.42it/s]
+Loading safetensors checkpoint shards:  47% Completed | 77/163 [00:13<00:17,  4.91it/s]
+Loading safetensors checkpoint shards:  48% Completed | 78/163 [00:13<00:16,  5.26it/s]
+Loading safetensors checkpoint shards:  48% Completed | 79/163 [00:13<00:15,  5.49it/s]
+Loading safetensors checkpoint shards:  50% Completed | 81/163 [00:13<00:12,  6.54it/s]
+Loading safetensors checkpoint shards:  50% Completed | 82/163 [00:13<00:12,  6.32it/s]
+Loading safetensors checkpoint shards:  51% Completed | 83/163 [00:14<00:13,  5.78it/s]
+Loading safetensors checkpoint shards:  52% Completed | 84/163 [00:14<00:15,  5.07it/s]
+Loading safetensors checkpoint shards:  52% Completed | 85/163 [00:14<00:14,  5.38it/s]
+Loading safetensors checkpoint shards:  53% Completed | 86/163 [00:14<00:14,  5.23it/s]
+Loading safetensors checkpoint shards:  53% Completed | 87/163 [00:15<00:15,  5.06it/s]
+Loading safetensors checkpoint shards:  54% Completed | 88/163 [00:15<00:16,  4.68it/s]
++ true
+++ curl -s -o /dev/null -w '%{http_code}' http://10.52.103.107:30000/health
+++ echo 000
++ status_code=000000
++ '[' 000000 -eq 200 ']'
++ '[' -n 1000370 ']'
++ kill -0 1000370
++ sleep 30
+Loading safetensors checkpoint shards:  55% Completed | 89/163 [00:15<00:15,  4.78it/s]
+Loading safetensors checkpoint shards:  55% Completed | 90/163 [00:15<00:15,  4.70it/s]
+Loading safetensors checkpoint shards:  56% Completed | 91/163 [00:15<00:16,  4.37it/s]
+Loading safetensors checkpoint shards:  56% Completed | 92/163 [00:16<00:17,  4.15it/s]
+Loading safetensors checkpoint shards:  57% Completed | 93/163 [00:16<00:17,  4.02it/s]
+Loading safetensors checkpoint shards:  58% Completed | 94/163 [00:16<00:17,  3.93it/s]
+Loading safetensors checkpoint shards:  58% Completed | 95/163 [00:17<00:17,  3.91it/s]
+Loading safetensors checkpoint shards:  59% Completed | 96/163 [00:17<00:15,  4.44it/s]
+Loading safetensors checkpoint shards:  60% Completed | 97/163 [00:17<00:15,  4.30it/s]
+Loading safetensors checkpoint shards:  60% Completed | 98/163 [00:17<00:14,  4.41it/s]
+Loading safetensors checkpoint shards:  61% Completed | 99/163 [00:17<00:13,  4.72it/s]
+Loading safetensors checkpoint shards:  61% Completed | 100/163 [00:17<00:12,  5.25it/s]
+Loading safetensors checkpoint shards:  62% Completed | 101/163 [00:18<00:12,  4.98it/s]
+Loading safetensors checkpoint shards:  63% Completed | 103/163 [00:18<00:10,  5.49it/s]
+Loading safetensors checkpoint shards:  64% Completed | 104/163 [00:18<00:11,  4.98it/s]
+Loading safetensors checkpoint shards:  64% Completed | 105/163 [00:19<00:12,  4.63it/s]
+Loading safetensors checkpoint shards:  65% Completed | 106/163 [00:19<00:12,  4.60it/s]
+Loading safetensors checkpoint shards:  66% Completed | 107/163 [00:19<00:13,  4.30it/s]
+Loading safetensors checkpoint shards:  66% Completed | 108/163 [00:19<00:13,  4.14it/s]
+Loading safetensors checkpoint shards:  67% Completed | 109/163 [00:20<00:12,  4.34it/s]
+Loading safetensors checkpoint shards:  67% Completed | 110/163 [00:20<00:12,  4.18it/s]
+Loading safetensors checkpoint shards:  68% Completed | 111/163 [00:20<00:12,  4.04it/s]
+Loading safetensors checkpoint shards:  69% Completed | 112/163 [00:20<00:12,  4.10it/s]
+Loading safetensors checkpoint shards:  69% Completed | 113/163 [00:20<00:10,  4.55it/s]
+Loading safetensors checkpoint shards:  70% Completed | 114/163 [00:21<00:10,  4.46it/s]
+Loading safetensors checkpoint shards:  71% Completed | 115/163 [00:21<00:11,  4.20it/s]
+Loading safetensors checkpoint shards:  71% Completed | 116/163 [00:21<00:11,  4.26it/s]
+Loading safetensors checkpoint shards:  72% Completed | 117/163 [00:21<00:11,  4.09it/s]
+Loading safetensors checkpoint shards:  72% Completed | 118/163 [00:22<00:10,  4.32it/s]
+Loading safetensors checkpoint shards:  74% Completed | 120/163 [00:22<00:07,  5.67it/s]
+Loading safetensors checkpoint shards:  74% Completed | 121/163 [00:22<00:06,  6.27it/s]
+Loading safetensors checkpoint shards:  75% Completed | 122/163 [00:22<00:07,  5.42it/s]
+Loading safetensors checkpoint shards:  75% Completed | 123/163 [00:22<00:07,  5.39it/s]
+Loading safetensors checkpoint shards:  76% Completed | 124/163 [00:23<00:07,  5.10it/s]
+Loading safetensors checkpoint shards:  77% Completed | 125/163 [00:23<00:07,  4.88it/s]
+Loading safetensors checkpoint shards:  77% Completed | 126/163 [00:23<00:07,  4.95it/s]
+Loading safetensors checkpoint shards:  79% Completed | 128/163 [00:23<00:05,  6.01it/s]
+Loading safetensors checkpoint shards:  79% Completed | 129/163 [00:24<00:06,  5.23it/s]
+Loading safetensors checkpoint shards:  80% Completed | 130/163 [00:24<00:06,  4.78it/s]
+Loading safetensors checkpoint shards:  80% Completed | 131/163 [00:24<00:06,  4.80it/s]
+Loading safetensors checkpoint shards:  81% Completed | 132/163 [00:24<00:06,  4.47it/s]
+Loading safetensors checkpoint shards:  82% Completed | 133/163 [00:25<00:07,  4.23it/s]
+Loading safetensors checkpoint shards:  83% Completed | 135/163 [00:25<00:05,  5.02it/s]
+Loading safetensors checkpoint shards:  83% Completed | 136/163 [00:25<00:05,  4.65it/s]
+Loading safetensors checkpoint shards:  84% Completed | 137/163 [00:25<00:05,  4.58it/s]
+Loading safetensors checkpoint shards:  85% Completed | 138/163 [00:26<00:05,  4.82it/s]
+Loading safetensors checkpoint shards:  85% Completed | 139/163 [00:26<00:05,  4.47it/s]
+Loading safetensors checkpoint shards:  86% Completed | 140/163 [00:26<00:04,  4.82it/s]
+Loading safetensors checkpoint shards:  87% Completed | 141/163 [00:26<00:04,  4.44it/s]
+Loading safetensors checkpoint shards:  87% Completed | 142/163 [00:26<00:04,  4.40it/s]
+Loading safetensors checkpoint shards:  88% Completed | 144/163 [00:27<00:03,  4.90it/s]
+Loading safetensors checkpoint shards:  89% Completed | 145/163 [00:27<00:03,  4.76it/s]
+Loading safetensors checkpoint shards:  90% Completed | 146/163 [00:27<00:04,  3.78it/s]
+Loading safetensors checkpoint shards:  91% Completed | 149/163 [00:28<00:02,  6.24it/s]
+Loading safetensors checkpoint shards:  92% Completed | 150/163 [00:28<00:02,  5.84it/s]
+Loading safetensors checkpoint shards:  93% Completed | 151/163 [00:28<00:02,  5.37it/s]
+Loading safetensors checkpoint shards:  93% Completed | 152/163 [00:28<00:02,  5.08it/s]
+Loading safetensors checkpoint shards:  94% Completed | 153/163 [00:29<00:02,  4.72it/s]
+Loading safetensors checkpoint shards:  94% Completed | 154/163 [00:29<00:02,  4.43it/s]
+Loading safetensors checkpoint shards:  95% Completed | 155/163 [00:29<00:01,  4.43it/s]
+Loading safetensors checkpoint shards:  96% Completed | 156/163 [00:29<00:01,  4.19it/s]
+Loading safetensors checkpoint shards:  96% Completed | 157/163 [00:30<00:01,  4.56it/s]
+Loading safetensors checkpoint shards:  97% Completed | 158/163 [00:30<00:01,  4.50it/s]
+Loading safetensors checkpoint shards:  98% Completed | 159/163 [00:30<00:00,  4.84it/s]
+Loading safetensors checkpoint shards:  98% Completed | 160/163 [00:30<00:00,  4.43it/s]
+Loading safetensors checkpoint shards:  99% Completed | 161/163 [00:30<00:00,  4.43it/s]
+Loading safetensors checkpoint shards:  99% Completed | 162/163 [00:31<00:00,  5.02it/s]
+Loading safetensors checkpoint shards: 100% Completed | 163/163 [00:31<00:00,  4.93it/s]
+quant attn to fp8 ue8m0:   0%|          | 0/61 [00:00<?, ?it/s]quant attn to fp8 ue8m0:   0%|          | 0/61 [00:00<?, ?it/s]quant attn to fp8 ue8m0:   0%|          | 0/61 [00:00<?, ?it/s]Loading safetensors checkpoint shards: 100% Completed | 163/163 [00:31<00:00,  5.21it/s]
+
+quant attn to fp8 ue8m0:   0%|          | 0/61 [00:00<?, ?it/s]quant attn to fp8 ue8m0:   2%|▏         | 1/61 [00:00<00:06,  8.92it/s]quant attn to fp8 ue8m0:   2%|▏         | 1/61 [00:00<00:06,  8.92it/s]quant attn to fp8 ue8m0:   2%|▏         | 1/61 [00:00<00:06,  8.85it/s]quant attn to fp8 ue8m0:   2%|▏         | 1/61 [00:00<00:06,  8.81it/s]quant attn to fp8 ue8m0:   3%|▎         | 2/61 [00:00<00:06,  8.99it/s]quant attn to fp8 ue8m0:   3%|▎         | 2/61 [00:00<00:06,  8.94it/s]quant attn to fp8 ue8m0:   3%|▎         | 2/61 [00:00<00:06,  8.96it/s]quant attn to fp8 ue8m0:   3%|▎         | 2/61 [00:00<00:06,  8.91it/s]quant attn to fp8 ue8m0:   5%|▍         | 3/61 [00:00<00:06,  8.79it/s]quant attn to fp8 ue8m0:   5%|▍         | 3/61 [00:00<00:06,  8.75it/s]quant attn to fp8 ue8m0:   5%|▍         | 3/61 [00:00<00:06,  8.77it/s]quant attn to fp8 ue8m0:   5%|▍         | 3/61 [00:00<00:06,  8.72it/s]quant attn to fp8 ue8m0:   7%|▋         | 4/61 [00:00<00:06,  8.73it/s]quant attn to fp8 ue8m0:   7%|▋         | 4/61 [00:00<00:06,  8.71it/s]quant attn to fp8 ue8m0:   7%|▋         | 4/61 [00:00<00:06,  8.72it/s]quant attn to fp8 ue8m0:   7%|▋         | 4/61 [00:00<00:06,  8.71it/s]quant attn to fp8 ue8m0:   8%|▊         | 5/61 [00:00<00:06,  8.73it/s]quant attn to fp8 ue8m0:   8%|▊         | 5/61 [00:00<00:06,  8.71it/s]quant attn to fp8 ue8m0:   8%|▊         | 5/61 [00:00<00:06,  8.72it/s]quant attn to fp8 ue8m0:   8%|▊         | 5/61 [00:00<00:06,  8.70it/s]quant attn to fp8 ue8m0:  10%|▉         | 6/61 [00:00<00:06,  8.74it/s]quant attn to fp8 ue8m0:  10%|▉         | 6/61 [00:00<00:06,  8.73it/s]quant attn to fp8 ue8m0:  10%|▉         | 6/61 [00:00<00:06,  8.73it/s]quant attn to fp8 ue8m0:  10%|▉         | 6/61 [00:00<00:06,  8.74it/s]quant attn to fp8 ue8m0:  11%|█▏        | 7/61 [00:00<00:06,  8.67it/s]quant attn to fp8 ue8m0:  11%|█▏        | 7/61 [00:00<00:06,  8.67it/s]quant attn to fp8 ue8m0:  11%|█▏        | 7/61 [00:00<00:06,  8.65it/s]quant attn to fp8 ue8m0:  11%|█▏        | 7/61 [00:00<00:06,  8.64it/s]quant attn to fp8 ue8m0:  13%|█▎        | 8/61 [00:00<00:05,  8.89it/s]quant attn to fp8 ue8m0:  13%|█▎        | 8/61 [00:00<00:05,  8.87it/s]quant attn to fp8 ue8m0:  13%|█▎        | 8/61 [00:00<00:05,  8.87it/s]quant attn to fp8 ue8m0:  13%|█▎        | 8/61 [00:00<00:05,  8.85it/s]quant attn to fp8 ue8m0:  15%|█▍        | 9/61 [00:01<00:06,  8.55it/s]quant attn to fp8 ue8m0:  15%|█▍        | 9/61 [00:01<00:06,  8.53it/s]quant attn to fp8 ue8m0:  15%|█▍        | 9/61 [00:01<00:06,  8.52it/s]quant attn to fp8 ue8m0:  15%|█▍        | 9/61 [00:01<00:06,  8.51it/s]quant attn to fp8 ue8m0:  16%|█▋        | 10/61 [00:01<00:05,  8.54it/s]quant attn to fp8 ue8m0:  16%|█▋        | 10/61 [00:01<00:05,  8.51it/s]quant attn to fp8 ue8m0:  16%|█▋        | 10/61 [00:01<00:05,  8.51it/s]quant attn to fp8 ue8m0:  16%|█▋        | 10/61 [00:01<00:05,  8.51it/s]quant attn to fp8 ue8m0:  18%|█▊        | 11/61 [00:01<00:05,  8.91it/s]quant attn to fp8 ue8m0:  18%|█▊        | 11/61 [00:01<00:05,  8.90it/s]quant attn to fp8 ue8m0:  18%|█▊        | 11/61 [00:01<00:05,  8.91it/s]quant attn to fp8 ue8m0:  20%|█▉        | 12/61 [00:01<00:05,  8.73it/s]quant attn to fp8 ue8m0:  20%|█▉        | 12/61 [00:01<00:05,  8.68it/s]quant attn to fp8 ue8m0:  20%|█▉        | 12/61 [00:01<00:05,  8.66it/s]quant attn to fp8 ue8m0:  20%|█▉        | 12/61 [00:01<00:05,  8.66it/s]quant attn to fp8 ue8m0:  21%|██▏       | 13/61 [00:01<00:05,  8.62it/s]quant attn to fp8 ue8m0:  21%|██▏       | 13/61 [00:01<00:05,  8.59it/s]quant attn to fp8 ue8m0:  21%|██▏       | 13/61 [00:01<00:05,  8.58it/s]quant attn to fp8 ue8m0:  21%|██▏       | 13/61 [00:01<00:05,  8.63it/s]quant attn to fp8 ue8m0:  23%|██▎       | 14/61 [00:01<00:05,  8.81it/s]quant attn to fp8 ue8m0:  23%|██▎       | 14/61 [00:01<00:05,  8.78it/s]quant attn to fp8 ue8m0:  23%|██▎       | 14/61 [00:01<00:05,  8.79it/s]quant attn to fp8 ue8m0:  23%|██▎       | 14/61 [00:01<00:05,  8.80it/s]quant attn to fp8 ue8m0:  25%|██▍       | 15/61 [00:01<00:05,  8.92it/s]quant attn to fp8 ue8m0:  25%|██▍       | 15/61 [00:01<00:05,  8.89it/s]quant attn to fp8 ue8m0:  25%|██▍       | 15/61 [00:01<00:05,  8.90it/s]quant attn to fp8 ue8m0:  25%|██▍       | 15/61 [00:01<00:05,  8.89it/s]quant attn to fp8 ue8m0:  26%|██▌       | 16/61 [00:01<00:05,  8.74it/s]quant attn to fp8 ue8m0:  26%|██▌       | 16/61 [00:01<00:05,  8.74it/s]quant attn to fp8 ue8m0:  26%|██▌       | 16/61 [00:01<00:05,  8.73it/s]quant attn to fp8 ue8m0:  26%|██▌       | 16/61 [00:01<00:05,  8.71it/s]quant attn to fp8 ue8m0:  28%|██▊       | 17/61 [00:01<00:05,  8.71it/s]quant attn to fp8 ue8m0:  28%|██▊       | 17/61 [00:01<00:05,  8.71it/s]quant attn to fp8 ue8m0:  28%|██▊       | 17/61 [00:01<00:05,  8.71it/s]quant attn to fp8 ue8m0:  28%|██▊       | 17/61 [00:01<00:05,  8.69it/s]quant attn to fp8 ue8m0:  30%|██▉       | 18/61 [00:02<00:04,  8.68it/s]quant attn to fp8 ue8m0:  30%|██▉       | 18/61 [00:02<00:04,  8.67it/s]quant attn to fp8 ue8m0:  30%|██▉       | 18/61 [00:02<00:04,  8.64it/s]quant attn to fp8 ue8m0:  30%|██▉       | 18/61 [00:02<00:04,  8.64it/s]quant attn to fp8 ue8m0:  31%|███       | 19/61 [00:02<00:04,  8.63it/s]quant attn to fp8 ue8m0:  31%|███       | 19/61 [00:02<00:04,  8.63it/s]quant attn to fp8 ue8m0:  31%|███       | 19/61 [00:02<00:04,  8.63it/s]quant attn to fp8 ue8m0:  31%|███       | 19/61 [00:02<00:04,  8.62it/s]quant attn to fp8 ue8m0:  33%|███▎      | 20/61 [00:02<00:04,  8.89it/s]quant attn to fp8 ue8m0:  33%|███▎      | 20/61 [00:02<00:04,  8.89it/s]quant attn to fp8 ue8m0:  33%|███▎      | 20/61 [00:02<00:04,  8.86it/s]quant attn to fp8 ue8m0:  33%|███▎      | 20/61 [00:02<00:04,  8.86it/s]quant attn to fp8 ue8m0:  34%|███▍      | 21/61 [00:02<00:04,  8.68it/s]quant attn to fp8 ue8m0:  34%|███▍      | 21/61 [00:02<00:04,  8.69it/s]quant attn to fp8 ue8m0:  34%|███▍      | 21/61 [00:02<00:04,  8.69it/s]quant attn to fp8 ue8m0:  34%|███▍      | 21/61 [00:02<00:04,  8.67it/s]quant attn to fp8 ue8m0:  36%|███▌      | 22/61 [00:02<00:04,  8.99it/s]quant attn to fp8 ue8m0:  36%|███▌      | 22/61 [00:02<00:04,  8.95it/s]quant attn to fp8 ue8m0:  36%|███▌      | 22/61 [00:02<00:04,  8.96it/s]quant attn to fp8 ue8m0:  36%|███▌      | 22/61 [00:02<00:04,  8.96it/s]quant attn to fp8 ue8m0:  38%|███▊      | 23/61 [00:02<00:04,  8.84it/s]quant attn to fp8 ue8m0:  38%|███▊      | 23/61 [00:02<00:04,  8.82it/s]quant attn to fp8 ue8m0:  38%|███▊      | 23/61 [00:02<00:04,  8.81it/s]quant attn to fp8 ue8m0:  38%|███▊      | 23/61 [00:02<00:04,  8.80it/s]quant attn to fp8 ue8m0:  39%|███▉      | 24/61 [00:02<00:04,  8.82it/s]quant attn to fp8 ue8m0:  39%|███▉      | 24/61 [00:02<00:04,  8.81it/s]quant attn to fp8 ue8m0:  39%|███▉      | 24/61 [00:02<00:04,  8.79it/s]quant attn to fp8 ue8m0:  39%|███▉      | 24/61 [00:02<00:04,  8.79it/s]quant attn to fp8 ue8m0:  41%|████      | 25/61 [00:02<00:04,  8.93it/s]quant attn to fp8 ue8m0:  41%|████      | 25/61 [00:02<00:04,  8.93it/s]quant attn to fp8 ue8m0:  41%|████      | 25/61 [00:02<00:04,  8.90it/s]quant attn to fp8 ue8m0:  41%|████      | 25/61 [00:02<00:04,  8.90it/s]quant attn to fp8 ue8m0:  43%|████▎     | 26/61 [00:02<00:04,  8.72it/s]quant attn to fp8 ue8m0:  43%|████▎     | 26/61 [00:02<00:04,  8.71it/s]quant attn to fp8 ue8m0:  43%|████▎     | 26/61 [00:02<00:04,  8.71it/s]quant attn to fp8 ue8m0:  43%|████▎     | 26/61 [00:02<00:04,  8.69it/s]quant attn to fp8 ue8m0:  44%|████▍     | 27/61 [00:03<00:03,  8.53it/s]quant attn to fp8 ue8m0:  44%|████▍     | 27/61 [00:03<00:03,  8.50it/s]quant attn to fp8 ue8m0:  44%|████▍     | 27/61 [00:03<00:04,  8.49it/s]quant attn to fp8 ue8m0:  44%|████▍     | 27/61 [00:03<00:04,  8.50it/s]quant attn to fp8 ue8m0:  46%|████▌     | 28/61 [00:03<00:04,  8.09it/s]quant attn to fp8 ue8m0:  46%|████▌     | 28/61 [00:03<00:04,  8.09it/s]quant attn to fp8 ue8m0:  46%|████▌     | 28/61 [00:03<00:04,  8.08it/s]quant attn to fp8 ue8m0:  46%|████▌     | 28/61 [00:03<00:04,  8.08it/s]quant attn to fp8 ue8m0:  48%|████▊     | 29/61 [00:03<00:03,  8.42it/s]quant attn to fp8 ue8m0:  48%|████▊     | 29/61 [00:03<00:03,  8.43it/s]quant attn to fp8 ue8m0:  48%|████▊     | 29/61 [00:03<00:03,  8.42it/s]quant attn to fp8 ue8m0:  48%|████▊     | 29/61 [00:03<00:03,  8.42it/s]quant attn to fp8 ue8m0:  49%|████▉     | 30/61 [00:03<00:03,  8.28it/s]quant attn to fp8 ue8m0:  49%|████▉     | 30/61 [00:03<00:03,  8.29it/s]quant attn to fp8 ue8m0:  49%|████▉     | 30/61 [00:03<00:03,  8.28it/s]quant attn to fp8 ue8m0:  49%|████▉     | 30/61 [00:03<00:03,  8.29it/s]quant attn to fp8 ue8m0:  51%|█████     | 31/61 [00:03<00:03,  8.49it/s]quant attn to fp8 ue8m0:  51%|█████     | 31/61 [00:03<00:03,  8.50it/s]quant attn to fp8 ue8m0:  51%|█████     | 31/61 [00:03<00:03,  8.48it/s]quant attn to fp8 ue8m0:  51%|█████     | 31/61 [00:03<00:03,  8.47it/s]quant attn to fp8 ue8m0:  52%|█████▏    | 32/61 [00:03<00:03,  8.34it/s]quant attn to fp8 ue8m0:  52%|█████▏    | 32/61 [00:03<00:03,  8.33it/s]quant attn to fp8 ue8m0:  52%|█████▏    | 32/61 [00:03<00:03,  8.33it/s]quant attn to fp8 ue8m0:  52%|█████▏    | 32/61 [00:03<00:03,  8.32it/s]quant attn to fp8 ue8m0:  54%|█████▍    | 33/61 [00:03<00:03,  8.71it/s]quant attn to fp8 ue8m0:  54%|█████▍    | 33/61 [00:03<00:03,  8.70it/s]quant attn to fp8 ue8m0:  54%|█████▍    | 33/61 [00:03<00:03,  8.71it/s]quant attn to fp8 ue8m0:  54%|█████▍    | 33/61 [00:03<00:03,  8.69it/s]quant attn to fp8 ue8m0:  56%|█████▌    | 34/61 [00:03<00:03,  8.71it/s]quant attn to fp8 ue8m0:  56%|█████▌    | 34/61 [00:03<00:03,  8.69it/s]quant attn to fp8 ue8m0:  56%|█████▌    | 34/61 [00:03<00:03,  8.69it/s]quant attn to fp8 ue8m0:  56%|█████▌    | 34/61 [00:03<00:03,  8.68it/s]quant attn to fp8 ue8m0:  57%|█████▋    | 35/61 [00:04<00:02,  8.80it/s]quant attn to fp8 ue8m0:  57%|█████▋    | 35/61 [00:04<00:02,  8.79it/s]quant attn to fp8 ue8m0:  57%|█████▋    | 35/61 [00:04<00:02,  8.78it/s]quant attn to fp8 ue8m0:  57%|█████▋    | 35/61 [00:04<00:02,  8.78it/s]quant attn to fp8 ue8m0:  59%|█████▉    | 36/61 [00:04<00:02,  8.70it/s]quant attn to fp8 ue8m0:  59%|█████▉    | 36/61 [00:04<00:02,  8.70it/s]quant attn to fp8 ue8m0:  59%|█████▉    | 36/61 [00:04<00:02,  8.70it/s]quant attn to fp8 ue8m0:  59%|█████▉    | 36/61 [00:04<00:02,  8.68it/s]quant attn to fp8 ue8m0:  61%|██████    | 37/61 [00:04<00:02,  8.73it/s]quant attn to fp8 ue8m0:  61%|██████    | 37/61 [00:04<00:02,  8.73it/s]quant attn to fp8 ue8m0:  61%|██████    | 37/61 [00:04<00:02,  8.71it/s]quant attn to fp8 ue8m0:  61%|██████    | 37/61 [00:04<00:02,  8.71it/s]quant attn to fp8 ue8m0:  62%|██████▏   | 38/61 [00:04<00:02,  8.81it/s]quant attn to fp8 ue8m0:  62%|██████▏   | 38/61 [00:04<00:02,  8.81it/s]quant attn to fp8 ue8m0:  62%|██████▏   | 38/61 [00:04<00:02,  8.80it/s]quant attn to fp8 ue8m0:  62%|██████▏   | 38/61 [00:04<00:02,  8.79it/s]quant attn to fp8 ue8m0:  64%|██████▍   | 39/61 [00:04<00:02,  8.70it/s]quant attn to fp8 ue8m0:  64%|██████▍   | 39/61 [00:04<00:02,  8.69it/s]quant attn to fp8 ue8m0:  64%|██████▍   | 39/61 [00:04<00:02,  8.68it/s]quant attn to fp8 ue8m0:  64%|██████▍   | 39/61 [00:04<00:02,  8.68it/s]quant attn to fp8 ue8m0:  66%|██████▌   | 40/61 [00:04<00:02,  8.79it/s]quant attn to fp8 ue8m0:  66%|██████▌   | 40/61 [00:04<00:02,  8.79it/s]quant attn to fp8 ue8m0:  66%|██████▌   | 40/61 [00:04<00:02,  8.78it/s]quant attn to fp8 ue8m0:  66%|██████▌   | 40/61 [00:04<00:02,  8.77it/s]quant attn to fp8 ue8m0:  67%|██████▋   | 41/61 [00:04<00:02,  8.97it/s]quant attn to fp8 ue8m0:  67%|██████▋   | 41/61 [00:04<00:02,  8.96it/s]quant attn to fp8 ue8m0:  67%|██████▋   | 41/61 [00:04<00:02,  8.94it/s]quant attn to fp8 ue8m0:  67%|██████▋   | 41/61 [00:04<00:02,  8.94it/s]quant attn to fp8 ue8m0:  69%|██████▉   | 42/61 [00:04<00:02,  8.69it/s]quant attn to fp8 ue8m0:  69%|██████▉   | 42/61 [00:04<00:02,  8.69it/s]quant attn to fp8 ue8m0:  69%|██████▉   | 42/61 [00:04<00:02,  8.66it/s]quant attn to fp8 ue8m0:  69%|██████▉   | 42/61 [00:04<00:02,  8.66it/s]quant attn to fp8 ue8m0:  70%|███████   | 43/61 [00:04<00:02,  8.62it/s]quant attn to fp8 ue8m0:  70%|███████   | 43/61 [00:04<00:02,  8.62it/s]quant attn to fp8 ue8m0:  70%|███████   | 43/61 [00:04<00:02,  8.60it/s]quant attn to fp8 ue8m0:  70%|███████   | 43/61 [00:04<00:02,  8.60it/s]quant attn to fp8 ue8m0:  72%|███████▏  | 44/61 [00:05<00:01,  8.54it/s]quant attn to fp8 ue8m0:  72%|███████▏  | 44/61 [00:05<00:01,  8.53it/s]quant attn to fp8 ue8m0:  72%|███████▏  | 44/61 [00:05<00:01,  8.52it/s]quant attn to fp8 ue8m0:  72%|███████▏  | 44/61 [00:05<00:01,  8.51it/s]quant attn to fp8 ue8m0:  74%|███████▍  | 45/61 [00:05<00:01,  8.30it/s]quant attn to fp8 ue8m0:  74%|███████▍  | 45/61 [00:05<00:01,  8.28it/s]quant attn to fp8 ue8m0:  74%|███████▍  | 45/61 [00:05<00:01,  8.27it/s]quant attn to fp8 ue8m0:  74%|███████▍  | 45/61 [00:05<00:01,  8.27it/s]quant attn to fp8 ue8m0:  75%|███████▌  | 46/61 [00:05<00:01,  8.36it/s]quant attn to fp8 ue8m0:  75%|███████▌  | 46/61 [00:05<00:01,  8.36it/s]quant attn to fp8 ue8m0:  75%|███████▌  | 46/61 [00:05<00:01,  8.33it/s]quant attn to fp8 ue8m0:  75%|███████▌  | 46/61 [00:05<00:01,  8.34it/s]quant attn to fp8 ue8m0:  77%|███████▋  | 47/61 [00:05<00:01,  8.25it/s]quant attn to fp8 ue8m0:  77%|███████▋  | 47/61 [00:05<00:01,  8.25it/s]quant attn to fp8 ue8m0:  77%|███████▋  | 47/61 [00:05<00:01,  8.24it/s]quant attn to fp8 ue8m0:  77%|███████▋  | 47/61 [00:05<00:01,  8.25it/s]quant attn to fp8 ue8m0:  79%|███████▊  | 48/61 [00:05<00:01,  8.53it/s]quant attn to fp8 ue8m0:  79%|███████▊  | 48/61 [00:05<00:01,  7.89it/s]quant attn to fp8 ue8m0:  79%|███████▊  | 48/61 [00:05<00:01,  7.81it/s]quant attn to fp8 ue8m0:  79%|███████▊  | 48/61 [00:05<00:01,  7.54it/s]quant attn to fp8 ue8m0:  80%|████████  | 49/61 [00:05<00:01,  8.44it/s]quant attn to fp8 ue8m0:  80%|████████  | 49/61 [00:05<00:01,  8.40it/s]quant attn to fp8 ue8m0:  82%|████████▏ | 50/61 [00:05<00:01,  8.73it/s]quant attn to fp8 ue8m0:  82%|████████▏ | 50/61 [00:05<00:01,  8.57it/s]quant attn to fp8 ue8m0:  82%|████████▏ | 50/61 [00:05<00:01,  8.79it/s]quant attn to fp8 ue8m0:  84%|████████▎ | 51/61 [00:05<00:01,  8.72it/s]quant attn to fp8 ue8m0:  84%|████████▎ | 51/61 [00:05<00:01,  8.64it/s]quant attn to fp8 ue8m0:  84%|████████▎ | 51/61 [00:05<00:01,  8.51it/s]quant attn to fp8 ue8m0:  84%|████████▎ | 51/61 [00:05<00:01,  8.69it/s]quant attn to fp8 ue8m0:  85%|████████▌ | 52/61 [00:06<00:01,  8.30it/s]quant attn to fp8 ue8m0:  85%|████████▌ | 52/61 [00:06<00:01,  8.45it/s]quant attn to fp8 ue8m0:  85%|████████▌ | 52/61 [00:06<00:01,  8.31it/s]quant attn to fp8 ue8m0:  85%|████████▌ | 52/61 [00:06<00:01,  8.12it/s]quant attn to fp8 ue8m0:  87%|████████▋ | 53/61 [00:06<00:00,  8.46it/s]quant attn to fp8 ue8m0:  87%|████████▋ | 53/61 [00:06<00:00,  8.56it/s]quant attn to fp8 ue8m0:  87%|████████▋ | 53/61 [00:06<00:00,  8.56it/s]quant attn to fp8 ue8m0:  89%|████████▊ | 54/61 [00:06<00:00,  8.41it/s]quant attn to fp8 ue8m0:  89%|████████▊ | 54/61 [00:06<00:00,  8.14it/s]quant attn to fp8 ue8m0:  89%|████████▊ | 54/61 [00:06<00:00,  8.23it/s]quant attn to fp8 ue8m0:  89%|████████▊ | 54/61 [00:06<00:00,  8.23it/s]quant attn to fp8 ue8m0:  90%|█████████ | 55/61 [00:06<00:00,  8.32it/s]quant attn to fp8 ue8m0:  90%|█████████ | 55/61 [00:06<00:00,  8.15it/s]quant attn to fp8 ue8m0:  90%|█████████ | 55/61 [00:06<00:00,  8.15it/s]quant attn to fp8 ue8m0:  90%|█████████ | 55/61 [00:06<00:00,  7.68it/s]quant attn to fp8 ue8m0:  92%|█████████▏| 56/61 [00:06<00:00,  8.44it/s]quant attn to fp8 ue8m0:  92%|█████████▏| 56/61 [00:06<00:00,  8.33it/s]quant attn to fp8 ue8m0:  92%|█████████▏| 56/61 [00:06<00:00,  8.33it/s]quant attn to fp8 ue8m0:  93%|█████████▎| 57/61 [00:06<00:00,  8.46it/s]quant attn to fp8 ue8m0:  93%|█████████▎| 57/61 [00:06<00:00,  8.46it/s]quant attn to fp8 ue8m0:  93%|█████████▎| 57/61 [00:06<00:00,  8.40it/s]quant attn to fp8 ue8m0:  93%|█████████▎| 57/61 [00:06<00:00,  7.49it/s]quant attn to fp8 ue8m0:  95%|█████████▌| 58/61 [00:06<00:00,  8.53it/s]quant attn to fp8 ue8m0:  95%|█████████▌| 58/61 [00:06<00:00,  8.53it/s]quant attn to fp8 ue8m0:  95%|█████████▌| 58/61 [00:06<00:00,  8.49it/s]quant attn to fp8 ue8m0:  97%|█████████▋| 59/61 [00:06<00:00,  8.60it/s]quant attn to fp8 ue8m0:  97%|█████████▋| 59/61 [00:06<00:00,  8.59it/s]quant attn to fp8 ue8m0:  97%|█████████▋| 59/61 [00:06<00:00,  8.58it/s]quant attn to fp8 ue8m0:  97%|█████████▋| 59/61 [00:06<00:00,  8.76it/s]quant attn to fp8 ue8m0:  98%|█████████▊| 60/61 [00:06<00:00,  8.91it/s]quant attn to fp8 ue8m0:  98%|█████████▊| 60/61 [00:06<00:00,  8.90it/s]quant attn to fp8 ue8m0:  98%|█████████▊| 60/61 [00:07<00:00,  8.09it/s]quant attn to fp8 ue8m0: 100%|██████████| 61/61 [00:07<00:00,  8.67it/s]quant attn to fp8 ue8m0: 100%|██████████| 61/61 [00:07<00:00,  8.60it/s]
+quant attn to fp8 ue8m0: 100%|██████████| 61/61 [00:07<00:00,  8.67it/s]quant attn to fp8 ue8m0: 100%|██████████| 61/61 [00:07<00:00,  8.60it/s]
+quant attn to fp8 ue8m0: 100%|██████████| 61/61 [00:07<00:00,  8.43it/s]quant attn to fp8 ue8m0: 100%|██████████| 61/61 [00:07<00:00,  8.57it/s]
+quant attn to fp8 ue8m0: 100%|██████████| 61/61 [00:07<00:00,  8.07it/s]quant attn to fp8 ue8m0: 100%|██████████| 61/61 [00:07<00:00,  8.56it/s]
++ true
+++ curl -s -o /dev/null -w '%{http_code}' http://10.52.103.107:30000/health
+++ echo 000
++ status_code=000000
++ '[' 000000 -eq 200 ']'
++ '[' -n 1000370 ']'
++ kill -0 1000370
++ sleep 30
++ true
+++ curl -s -o /dev/null -w '%{http_code}' http://10.52.103.107:30000/health
+++ echo 000
++ status_code=000000
++ '[' 000000 -eq 200 ']'
++ '[' -n 1000370 ']'
++ kill -0 1000370
++ sleep 30
+[2025-11-30 09:18:01 DP0 TP0 EP0] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2025-11-30 09:18:01 DP3 TP3 EP3] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2025-11-30 09:18:01 DP3 TP3 EP3] Load weight end. type=DeepseekV3ForCausalLM, dtype=torch.bfloat16, avail mem=66.40 GB, mem usage=115.75 GB.
+[2025-11-30 09:18:01 DP0 TP0 EP0] Load weight end. type=DeepseekV3ForCausalLM, dtype=torch.bfloat16, avail mem=66.41 GB, mem usage=115.74 GB.
+[2025-11-30 09:18:01 DP1 TP1 EP1] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2025-11-30 09:18:01 DP1 TP1 EP1] Load weight end. type=DeepseekV3ForCausalLM, dtype=torch.bfloat16, avail mem=66.41 GB, mem usage=115.74 GB.
++ true
+++ curl -s -o /dev/null -w '%{http_code}' http://10.52.103.107:30000/health
+++ echo 000
++ status_code=000000
++ '[' 000000 -eq 200 ']'
++ '[' -n 1000370 ']'
++ kill -0 1000370
++ sleep 30
+[2025-11-30 09:18:05 DP2 TP2 EP2] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2025-11-30 09:18:05 DP2 TP2 EP2] Load weight end. type=DeepseekV3ForCausalLM, dtype=torch.bfloat16, avail mem=66.41 GB, mem usage=115.74 GB.
+[2025-11-30 09:18:05 DP0 TP0 EP0] Using KV cache dtype: torch.float8_e4m3fn
+[2025-11-30 09:18:05 DP2 TP2 EP2] KV Cache is allocated. #tokens: 131072, KV size: 4.29 GB
+[2025-11-30 09:18:05 DP0 TP0 EP0] KV Cache is allocated. #tokens: 131072, KV size: 4.29 GB
+[2025-11-30 09:18:05 DP2 TP2 EP2] Memory pool end. avail mem=62.00 GB
+[2025-11-30 09:18:05 DP0 TP0 EP0] Memory pool end. avail mem=62.00 GB
+[2025-11-30 09:18:05 DP1 TP1 EP1] KV Cache is allocated. #tokens: 131072, KV size: 4.29 GB
+[2025-11-30 09:18:05 DP1 TP1 EP1] Memory pool end. avail mem=62.00 GB
+[2025-11-30 09:18:05 DP3 TP3 EP3] KV Cache is allocated. #tokens: 131072, KV size: 4.29 GB
+[2025-11-30 09:18:05 DP3 TP3 EP3] Memory pool end. avail mem=62.00 GB
+[2025-11-30 09:18:06 DP0 TP0 EP0] max_total_num_tokens=131072, chunked_prefill_size=32768, max_prefill_tokens=32768, max_running_requests=192, context_len=4224, available_gpu_mem=61.44 GB
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I1130 09:18:06.629860 1001158 transfer_engine.cpp:91] Transfer Engine parseHostNameWithPort. server_name: 10.52.103.107 port: 12001
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I1130 09:18:06.629871 1003434 transfer_engine.cpp:493] Metrics reporting thread started (interval: 5s)
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I1130 09:18:06.629860 1001160 transfer_engine.cpp:91] Transfer Engine parseHostNameWithPort. server_name: 10.52.103.107 port: 12001
+I1130 09:18:06.631108 1001158 transfer_engine.cpp:146] Transfer Engine RPC using P2P handshake, listening on 10.52.103.107:15526
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I1130 09:18:06.629863 1001159 transfer_engine.cpp:91] Transfer Engine parseHostNameWithPort. server_name: 10.52.103.107 port: 12001
+I1130 09:18:06.629876 1003435 transfer_engine.cpp:493] Metrics reporting thread started (interval: 5s)
+I1130 09:18:06.629953 1001161 transfer_engine.cpp:91] Transfer Engine parseHostNameWithPort. server_name: 10.52.103.107 port: 12001
+I1130 09:18:06.629909 1003436 transfer_engine.cpp:493] Metrics reporting thread started (interval: 5s)
+I1130 09:18:06.631283 1001158 transfer_engine.cpp:185] Auto-discovering topology...
+I1130 09:18:06.631222 1001160 transfer_engine.cpp:146] Transfer Engine RPC using P2P handshake, listening on 10.52.103.107:16427
+I1130 09:18:06.629966 1003437 transfer_engine.cpp:493] Metrics reporting thread started (interval: 5s)
+I1130 09:18:06.631284 1001159 transfer_engine.cpp:146] Transfer Engine RPC using P2P handshake, listening on 10.52.103.107:15168
+I1130 09:18:06.631337 1001161 transfer_engine.cpp:146] Transfer Engine RPC using P2P handshake, listening on 10.52.103.107:15847
+I1130 09:18:06.631440 1001160 transfer_engine.cpp:185] Auto-discovering topology...
+I1130 09:18:06.631481 1001159 transfer_engine.cpp:185] Auto-discovering topology...
+I1130 09:18:06.631516 1001161 transfer_engine.cpp:185] Auto-discovering topology...
+I1130 09:18:06.633123 1001159 transfer_engine.cpp:200] Topology discovery complete. Found 4 HCAs.
+I1130 09:18:06.633147 1001160 transfer_engine.cpp:200] Topology discovery complete. Found 4 HCAs.
+I1130 09:18:06.633147 1001158 transfer_engine.cpp:200] Topology discovery complete. Found 4 HCAs.
+I1130 09:18:06.633150 1001161 transfer_engine.cpp:200] Topology discovery complete. Found 4 HCAs.
+W1130 09:18:06.646371 1001159 nvlink_transport.cpp:385] Memory region 0x2fdca5c0 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646374 1001160 nvlink_transport.cpp:385] Memory region 0x2e7a8ec0 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646416 1001159 nvlink_transport.cpp:385] Memory region 0x2eee4b40 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646421 1001158 nvlink_transport.cpp:385] Memory region 0x2f1c7080 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646456 1001160 nvlink_transport.cpp:385] Memory region 0x2e7b1080 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646466 1001159 nvlink_transport.cpp:385] Memory region 0x2eeeabc0 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646468 1001161 nvlink_transport.cpp:385] Memory region 0x2eba4940 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646495 1001158 nvlink_transport.cpp:385] Memory region 0x2f1cd0c0 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646505 1001160 nvlink_transport.cpp:385] Memory region 0x2e7b7100 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646530 1001159 nvlink_transport.cpp:385] Memory region 0x2eef0c40 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646559 1001161 nvlink_transport.cpp:385] Memory region 0x2ebacc40 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646571 1001158 nvlink_transport.cpp:385] Memory region 0x2f1d3100 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646582 1001160 nvlink_transport.cpp:385] Memory region 0x2e7bd180 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646592 1001159 nvlink_transport.cpp:385] Memory region 0x75cfeac0 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646602 1001161 nvlink_transport.cpp:385] Memory region 0x2ebb2cc0 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646615 1001158 nvlink_transport.cpp:385] Memory region 0x2f1d9140 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646625 1001160 nvlink_transport.cpp:385] Memory region 0x339b9580 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646636 1001159 nvlink_transport.cpp:385] Memory region 0x2a173880 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646646 1001161 nvlink_transport.cpp:385] Memory region 0x2ebb8d40 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646657 1001158 nvlink_transport.cpp:385] Memory region 0x2ce24440 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646667 1001160 nvlink_transport.cpp:385] Memory region 0x2a52a8c0 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646678 1001159 nvlink_transport.cpp:385] Memory region 0x75d2eb00 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646687 1001161 nvlink_transport.cpp:385] Memory region 0x2d98a740 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646698 1001158 nvlink_transport.cpp:385] Memory region 0x31cc1d40 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646710 1001160 nvlink_transport.cpp:385] Memory region 0x339e9600 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646744 1001159 nvlink_transport.cpp:385] Memory region 0x2a1a3900 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646754 1001161 nvlink_transport.cpp:385] Memory region 0x74c61040 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646765 1001158 nvlink_transport.cpp:385] Memory region 0x2ce54480 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646776 1001160 nvlink_transport.cpp:385] Memory region 0x339ef680 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646788 1001159 nvlink_transport.cpp:385] Memory region 0x3ed5b040 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646798 1001161 nvlink_transport.cpp:385] Memory region 0x2d9ba780 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646809 1001158 nvlink_transport.cpp:385] Memory region 0x31cf1dc0 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646819 1001160 nvlink_transport.cpp:385] Memory region 0x502759c0 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646839 1001161 nvlink_transport.cpp:385] Memory region 0x74c91080 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646849 1001158 nvlink_transport.cpp:385] Memory region 0x4107d840 is not allocated by cuMemCreate, but it can be used as local buffer
+W1130 09:18:06.646869 1001161 nvlink_transport.cpp:385] Memory region 0x6187b540 is not allocated by cuMemCreate, but it can be used as local buffer
+[2025-11-30 09:18:06] INFO:     Started server process [1000370]
+[2025-11-30 09:18:06] INFO:     Waiting for application startup.
+[2025-11-30 09:18:06] Using default chat sampling params from model generation config: {'repetition_penalty': 1.0, 'temperature': 0.6, 'top_k': 50, 'top_p': 0.95}
+[2025-11-30 09:18:06] Using default chat sampling params from model generation config: {'repetition_penalty': 1.0, 'temperature': 0.6, 'top_k': 50, 'top_p': 0.95}
+[2025-11-30 09:18:06] INFO:     Application startup complete.
+[2025-11-30 09:18:06] INFO:     Uvicorn running on http://0.0.0.0:30000 (Press CTRL+C to quit)
+[2025-11-30 09:18:07] Endpoint '/get_model_info' is deprecated and will be removed in a future version. Please use '/model_info' instead.
+[2025-11-30 09:18:07] INFO:     127.0.0.1:35154 - "GET /get_model_info HTTP/1.1" 200 OK
+[2025-11-30 09:18:07] Start of pd disaggregation warmup ...
+[2025-11-30 09:18:07 DP3 TP3 EP3] Prefill batch, #new-seq: 1, #new-token: 64, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 0.00, 
+[2025-11-30 09:18:07 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 64, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 0.00, 
+[2025-11-30 09:18:07 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 64, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 0.00, 
+[2025-11-30 09:18:07 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 64, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 0.00, 
+[2025-11-30 09:18:11] INFO:     127.0.0.1:35166 - "POST /generate HTTP/1.1" 200 OK
+[2025-11-30 09:18:11] End of prefill disaggregation mode warmup with status 200, resp: [{'text': 'form', 'output_ids': [794], 'meta_info': {'id': '17e87d1c5eca4184ab8705db0551a92c', 'finish_reason': {'type': 'length', 'length': 0}, 'prompt_tokens': 4, 'weight_version': 'default', 'total_retractions': 0, 'completion_tokens': 1, 'cached_tokens': 0, 'e2e_latency': 3.752079963684082, 'response_sent_to_client_ts': 1764523091.4299634}}, {'text': ' The', 'output_ids': [455], 'meta_info': {'id': '4a025afed12146ce9d8e579c797c2390', 'finish_reason': {'type': 'length', 'length': 0}, 'prompt_tokens': 4, 'weight_version': 'default', 'total_retractions': 0, 'completion_tokens': 1, 'cached_tokens': 0, 'e2e_latency': 3.7522759437561035, 'response_sent_to_client_ts': 1764523091.4300997}}, {'text': ' ', 'output_ids': [223], 'meta_info': {'id': '944e1b72ff604d7f84007a3a1708edbf', 'finish_reason': {'type': 'length', 'length': 0}, 'prompt_tokens': 4, 'weight_version': 'default', 'total_retractions': 0, 'completion_tokens': 1, 'cached_tokens': 0, 'e2e_latency': 3.7523200511932373, 'response_sent_to_client_ts': 1764523091.4301476}}, {'text': '[\\', 'output_ids': [27226], 'meta_info': {'id': 'f0dee17954ee4bedb89ff052689a5b30', 'finish_reason': {'type': 'length', 'length': 0}, 'prompt_tokens': 4, 'weight_version': 'default', 'total_retractions': 0, 'completion_tokens': 1, 'cached_tokens': 0, 'e2e_latency': 3.752213716506958, 'response_sent_to_client_ts': 1764523091.4300492}}]
+[2025-11-30 09:18:11] The server is fired up and ready to roll!
++ true
+++ curl -s -o /dev/null -w '%{http_code}' http://10.52.103.107:30000/health
+[2025-11-30 09:18:32 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 64, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 2.56, 
+[2025-11-30 09:18:33] INFO:     10.52.103.107:55124 - "GET /health HTTP/1.1" 200 OK
++ status_code=200
++ '[' 200 -eq 200 ']'
++ echo 'Server http://10.52.103.107:30000 is ready'
+Server http://10.52.103.107:30000 is ready
++ break
++ echo 'Launching router'
+Launching router
++ sleep 10
++ python3 -m sglang_router.launch_router --pd-disaggregation --mini-lb --prefill http://10.52.103.107:30000 30001 --decode http://10.52.103.108:30000 --host 0.0.0.0 --port 8000
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_DG_CACHE_DIR is deprecated, please use SGLANG_DG_CACHE_DIR
+  warnings.warn(
+[33mMiniLB is only for debugging purposes, it only supports random policy![0m
+[MiniLB] Overriding policy to random
+INFO:     Started server process [1003903]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
++ echo 'Launch bench_one_batch_server 1k 1k 1k'
+Launch bench_one_batch_server 1k 1k 1k
++ python3 -m sglang.bench_one_batch_server --dataset-path /base_dir/datasets/ShareGPT_V3_unfiltered_cleaned_split.json --model-path nvidia/DeepSeek-R1-0528-FP4 --base-url http://10.52.103.107:8000 --batch-size 1024 --input-len 1024 --output-len 1 --skip-warmup --result-filename /lustre/fsw/coreai_prod_infbench/faradawny/tme-slurm-commands-guide/trevor/logs/result.jsonl
+/sgl-workspace/sglang/python/sglang/srt/environ.py:337: UserWarning: Environment variable SGL_DG_CACHE_DIR is deprecated, please use SGLANG_DG_CACHE_DIR
+  warnings.warn(
+[2025-11-30 09:18:50] INFO server_args.py:941: Use trtllm_mla as attention backend on sm100 for DeepseekV3ForCausalLM
+[2025-11-30 09:18:50] INFO server_args.py:947: Enable FlashInfer AllReduce Fusion on sm100 for DeepseekV3ForCausalLM
+[2025-11-30 09:18:50] INFO server_args.py:962: Quantization not specified, default to fp8 for DeepSeek on sm100
+[2025-11-30 09:18:50] INFO server_args.py:973: Use flashinfer_trtllm as MoE runner backend on sm100 for DeepseekV3ForCausalLM
+[2025-11-30 09:18:50] WARNING server_args.py:1329: TensorRT-LLM MLA only supports page_size of 32 or 64, changing page_size from None to 64.
+[2025-11-30 09:18:50] WARNING server_args.py:1479: FlashInfer TRTLLM MoE is enabled. --disable-shared-experts-fusion is automatically set.
+[2025-11-30 09:18:50] Endpoint '/get_server_info' is deprecated and will be removed in a future version. Please use '/server_info' instead.
+[2025-11-30 09:18:50] INFO:     10.52.103.107:51478 - "GET /get_server_info HTTP/1.1" 200 OK
+INFO:     10.52.103.107:47274 - "GET /get_server_info HTTP/1.1" 200 OK
+[2025-11-30 09:18:51 DP0 TP0 EP0] Cache flushed successfully!
+[2025-11-30 09:18:51 DP2 TP2 EP2] Cache flushed successfully!
+[2025-11-30 09:18:51 DP1 TP1 EP1] Cache flushed successfully!
+[2025-11-30 09:18:51 DP3 TP3 EP3] Cache flushed successfully!
+[2025-11-30 09:18:51] INFO:     10.52.103.107:51482 - "POST /flush_cache HTTP/1.1" 200 OK
+INFO:     10.52.103.107:47276 - "POST /flush_cache HTTP/1.1" 200 OK
+INFO:     10.52.103.107:44162 - "POST /generate HTTP/1.1" 200 OK
+[2025-11-30 09:18:55] INFO:     10.52.103.107:49612 - "POST /generate HTTP/1.1" 200 OK
+[2025-11-30 09:18:55 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 19, #inflight-req: 0, input throughput (token/s): 1.34, 
+[2025-11-30 09:18:55 DP3 TP3 EP3] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 11, #prealloc-req: 231, #inflight-req: 0, input throughput (token/s): 1.33, 
+[2025-11-30 09:18:55 DP1 TP1 EP1] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 14, #prealloc-req: 220, #inflight-req: 0, input throughput (token/s): 1.33, 
+[2025-11-30 09:18:57 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 229, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 2.59, 
+[2025-11-30 09:18:57 DP2 TP2 EP2] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.01, #running-req: 0, #queue-req: 190, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 502.43, 
+[2025-11-30 09:18:59 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.25, #running-req: 0, #queue-req: 197, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 14257.27, 
+[2025-11-30 09:18:59 DP3 TP3 EP3] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.25, #running-req: 0, #queue-req: 210, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 8071.13, 
+[2025-11-30 09:18:59 DP2 TP2 EP2] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.26, #running-req: 0, #queue-req: 158, #prealloc-req: 0, #inflight-req: 1, input throughput (token/s): 14271.59, 
+[2025-11-30 09:18:59 DP1 TP1 EP1] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.25, #running-req: 0, #queue-req: 202, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 8071.69, 
+[2025-11-30 09:19:00 DP1 TP1 EP1] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.50, #running-req: 0, #queue-req: 170, #prealloc-req: 0, #inflight-req: 32, input throughput (token/s): 40501.35, 
+[2025-11-30 09:19:00 DP3 TP3 EP3] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.50, #running-req: 0, #queue-req: 178, #prealloc-req: 0, #inflight-req: 32, input throughput (token/s): 40495.86, 
+[2025-11-30 09:19:00 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.50, #running-req: 0, #queue-req: 165, #prealloc-req: 0, #inflight-req: 32, input throughput (token/s): 40319.38, 
+[2025-11-30 09:19:00 DP2 TP2 EP2] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.50, #running-req: 0, #queue-req: 126, #prealloc-req: 0, #inflight-req: 32, input throughput (token/s): 40319.76, 
+I1130 09:19:01.634593 1003434 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 49.27 MB/s (over last 5s)
+I1130 09:19:01.634783 1003436 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 219.60 MB/s (over last 5s)
+I1130 09:19:01.634933 1003437 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 5.29 MB/s (over last 5s)
+I1130 09:19:01.652136 1003435 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 151.88 MB/s (over last 5s)
+[2025-11-30 09:19:02 DP2 TP2 EP2] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.50, #running-req: 0, #queue-req: 94, #prealloc-req: 0, #inflight-req: 32, input throughput (token/s): 19970.78, 
+[2025-11-30 09:19:02 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.55, #running-req: 0, #queue-req: 133, #prealloc-req: 0, #inflight-req: 39, input throughput (token/s): 19890.38, 
+[2025-11-30 09:19:02 DP3 TP3 EP3] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.48, #running-req: 0, #queue-req: 146, #prealloc-req: 0, #inflight-req: 29, input throughput (token/s): 19856.83, 
+[2025-11-30 09:19:02 DP1 TP1 EP1] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.48, #running-req: 0, #queue-req: 138, #prealloc-req: 0, #inflight-req: 29, input throughput (token/s): 19854.87, 
+[2025-11-30 09:19:03 DP1 TP1 EP1] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.50, #running-req: 0, #queue-req: 106, #prealloc-req: 0, #inflight-req: 32, input throughput (token/s): 19792.90, 
+[2025-11-30 09:19:03 DP3 TP3 EP3] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.46, #running-req: 0, #queue-req: 114, #prealloc-req: 0, #inflight-req: 27, input throughput (token/s): 19782.51, 
+[2025-11-30 09:19:03 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.43, #running-req: 0, #queue-req: 101, #prealloc-req: 0, #inflight-req: 23, input throughput (token/s): 19772.49, 
+[2025-11-30 09:19:03 DP2 TP2 EP2] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.41, #running-req: 0, #queue-req: 62, #prealloc-req: 0, #inflight-req: 21, input throughput (token/s): 19693.66, 
+[2025-11-30 09:19:05 DP2 TP2 EP2] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.41, #running-req: 0, #queue-req: 30, #prealloc-req: 0, #inflight-req: 21, input throughput (token/s): 20325.11, 
+[2025-11-30 09:19:05 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.44, #running-req: 0, #queue-req: 69, #prealloc-req: 0, #inflight-req: 24, input throughput (token/s): 20275.80, 
+[2025-11-30 09:19:05 DP1 TP1 EP1] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.41, #running-req: 0, #queue-req: 74, #prealloc-req: 0, #inflight-req: 20, input throughput (token/s): 20256.91, 
+[2025-11-30 09:19:05 DP3 TP3 EP3] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.41, #running-req: 0, #queue-req: 82, #prealloc-req: 0, #inflight-req: 20, input throughput (token/s): 20266.22, 
+I1130 09:19:06.635960 1003434 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 829.12 MB/s (over last 5s)
+I1130 09:19:06.636022 1003436 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 658.80 MB/s (over last 5s)
+I1130 09:19:06.636056 1003437 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 873.11 MB/s (over last 5s)
+I1130 09:19:06.652494 1003435 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 733.39 MB/s (over last 5s)
+[2025-11-30 09:19:07 DP2 TP2 EP2] Prefill batch, #new-seq: 30, #new-token: 30720, #cached-token: 0, token usage: 0.41, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 20, input throughput (token/s): 20366.67, 
+[2025-11-30 09:19:07 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.43, #running-req: 0, #queue-req: 37, #prealloc-req: 0, #inflight-req: 23, input throughput (token/s): 20415.48, 
+[2025-11-30 09:19:07 DP3 TP3 EP3] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.41, #running-req: 0, #queue-req: 50, #prealloc-req: 0, #inflight-req: 21, input throughput (token/s): 20373.68, 
+[2025-11-30 09:19:07 DP1 TP1 EP1] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.41, #running-req: 0, #queue-req: 42, #prealloc-req: 0, #inflight-req: 20, input throughput (token/s): 20371.40, 
+[2025-11-30 09:19:08 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.44, #running-req: 0, #queue-req: 5, #prealloc-req: 0, #inflight-req: 24, input throughput (token/s): 20403.99, 
+[2025-11-30 09:19:08 DP3 TP3 EP3] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.42, #running-req: 0, #queue-req: 18, #prealloc-req: 0, #inflight-req: 22, input throughput (token/s): 20440.24, 
+[2025-11-30 09:19:08 DP1 TP1 EP1] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.42, #running-req: 0, #queue-req: 10, #prealloc-req: 0, #inflight-req: 22, input throughput (token/s): 20437.23, 
+[2025-11-30 09:19:10 DP0 TP0 EP0] Prefill batch, #new-seq: 5, #new-token: 5120, #cached-token: 0, token usage: 0.44, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 24, input throughput (token/s): 21712.73, 
+[2025-11-30 09:19:10 DP1 TP1 EP1] Prefill batch, #new-seq: 10, #new-token: 10240, #cached-token: 0, token usage: 0.41, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 20, input throughput (token/s): 21724.26, 
+[2025-11-30 09:19:10 DP3 TP3 EP3] Prefill batch, #new-seq: 18, #new-token: 18432, #cached-token: 0, token usage: 0.41, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 20, input throughput (token/s): 21716.73, 
+I1130 09:19:11.637418 1003434 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 912.71 MB/s (over last 5s)
+I1130 09:19:11.637459 1003436 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 947.02 MB/s (over last 5s)
+I1130 09:19:11.637495 1003437 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 1001.92 MB/s (over last 5s)
+I1130 09:19:11.652854 1003435 transfer_engine.cpp:523] [Metrics] Transfer Engine Throughput: 645.08 MB/s (over last 5s)
+[2025-11-30 09:19:11] Endpoint '/get_server_info' is deprecated and will be removed in a future version. Please use '/server_info' instead.
+[2025-11-30 09:19:11] INFO:     10.52.103.107:42988 - "GET /get_server_info HTTP/1.1" 200 OK
+Unclosed connection
+client_connection: Connection<ConnectionKey(host='10.52.103.107', port=30000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None)>
+INFO:     10.52.103.107:57188 - "GET /get_server_info HTTP/1.1" 200 OK
+#Input tokens: 1048576
+#Output tokens: 1024
+batch size: 1024
+input_len: 1024
+output_len: 1
+latency: 16.68 s
+ttft: 16.68 s
+last generation throughput: 28.02 tok/s
+input throughput: 62862.29 tok/s
+
+Results are saved to /lustre/fsw/coreai_prod_infbench/faradawny/tme-slurm-commands-guide/trevor/logs/result.jsonl
++ wait 1000370
+[2025-11-30T11:14:49.011] error: *** STEP 1273864.0 ON ptyche0253 CANCELLED AT 2025-11-30T11:14:49 DUE TO TIME LIMIT ***

@@ -1,0 +1,28 @@
+[2025-11-30 09:16:09 DP0 TP0 EP0] Init torch distributed begin.
+[2025-11-30 09:16:10 DP0 TP0 EP0] sglang is using nccl==2.27.3
+[2025-11-30 09:16:11 DP0 TP0 EP0] Init torch distributed ends. mem usage=1.11 GB
+[2025-11-30 09:16:12 DP0 TP0 EP0] Ignore import error when loading sglang.srt.models.mindspore: name 'ms' is not defined
+[2025-11-30 09:16:14 DP0 TP0 EP0] Load weight begin. avail mem=182.15 GB
+[2025-11-30 09:16:14 DP0 TP0 EP0] Using ModelOptModelLoader due to ModelOpt quantization config.
+[2025-11-30 09:16:14 DP0 TP0 EP0] ModelOptModelLoader: Loading base model...
+[2025-11-30 09:16:14 DP0 TP0 EP0] Model is already quantized, loading directly...
+[2025-11-30 09:16:14 DP0 TP0 EP0] Detected nvfp4 checkpoint. Please note that the format is experimental and subject to change.
+[2025-11-30 09:16:15 DP0 TP0 EP0] Using model weights format ['*.safetensors']
+[2025-11-30 09:18:01 DP0 TP0 EP0] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2025-11-30 09:18:01 DP0 TP0 EP0] Load weight end. type=DeepseekV3ForCausalLM, dtype=torch.bfloat16, avail mem=66.41 GB, mem usage=115.74 GB.
+[2025-11-30 09:18:05 DP0 TP0 EP0] Using KV cache dtype: torch.float8_e4m3fn
+[2025-11-30 09:18:05 DP0 TP0 EP0] KV Cache is allocated. #tokens: 131072, KV size: 4.29 GB
+[2025-11-30 09:18:05 DP0 TP0 EP0] Memory pool end. avail mem=62.00 GB
+[2025-11-30 09:18:06 DP0 TP0 EP0] max_total_num_tokens=131072, chunked_prefill_size=32768, max_prefill_tokens=32768, max_running_requests=192, context_len=4224, available_gpu_mem=61.44 GB
+[2025-11-30 09:18:07 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 64, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 0.00, 
+[2025-11-30 09:18:32 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 64, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 2.56, 
+[2025-11-30 09:18:51 DP0 TP0 EP0] Cache flushed successfully!
+[2025-11-30 09:18:57 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 229, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 2.59, 
+[2025-11-30 09:18:59 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.25, #running-req: 0, #queue-req: 197, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 14257.27, 
+[2025-11-30 09:19:00 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.50, #running-req: 0, #queue-req: 165, #prealloc-req: 0, #inflight-req: 32, input throughput (token/s): 40319.38, 
+[2025-11-30 09:19:02 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.55, #running-req: 0, #queue-req: 133, #prealloc-req: 0, #inflight-req: 39, input throughput (token/s): 19890.38, 
+[2025-11-30 09:19:03 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.43, #running-req: 0, #queue-req: 101, #prealloc-req: 0, #inflight-req: 23, input throughput (token/s): 19772.49, 
+[2025-11-30 09:19:05 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.44, #running-req: 0, #queue-req: 69, #prealloc-req: 0, #inflight-req: 24, input throughput (token/s): 20275.80, 
+[2025-11-30 09:19:07 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.43, #running-req: 0, #queue-req: 37, #prealloc-req: 0, #inflight-req: 23, input throughput (token/s): 20415.48, 
+[2025-11-30 09:19:08 DP0 TP0 EP0] Prefill batch, #new-seq: 32, #new-token: 32768, #cached-token: 0, token usage: 0.44, #running-req: 0, #queue-req: 5, #prealloc-req: 0, #inflight-req: 24, input throughput (token/s): 20403.99, 
+[2025-11-30 09:19:10 DP0 TP0 EP0] Prefill batch, #new-seq: 5, #new-token: 5120, #cached-token: 0, token usage: 0.44, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 24, input throughput (token/s): 21712.73, 

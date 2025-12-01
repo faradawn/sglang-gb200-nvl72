@@ -1,0 +1,99 @@
+[2025-11-30 07:43:03 DP0 TP0 EP0] Init torch distributed begin.
+[2025-11-30 07:43:04 DP0 TP0 EP0] sglang is using nccl==2.27.3
+[2025-11-30 07:43:05 DP0 TP0 EP0] Init torch distributed ends. mem usage=1.11 GB
+[2025-11-30 07:43:06 DP0 TP0 EP0] Ignore import error when loading sglang.srt.models.mindspore: name 'ms' is not defined
+[2025-11-30 07:43:08 DP0 TP0 EP0] Load weight begin. avail mem=182.15 GB
+[2025-11-30 07:43:08 DP0 TP0 EP0] Using ModelOptModelLoader due to ModelOpt quantization config.
+[2025-11-30 07:43:08 DP0 TP0 EP0] ModelOptModelLoader: Loading base model...
+[2025-11-30 07:43:08 DP0 TP0 EP0] Model is already quantized, loading directly...
+[2025-11-30 07:43:08 DP0 TP0 EP0] Detected nvfp4 checkpoint. Please note that the format is experimental and subject to change.
+[2025-11-30 07:43:08 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:08 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:08 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:08 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:08 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:08 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:09 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2025-11-30 07:43:10 DP0 TP0 EP0] Using model weights format ['*.safetensors']
+[2025-11-30 07:44:55 DP0 TP0 EP0] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2025-11-30 07:44:55 DP0 TP0 EP0] Load weight end. type=DeepseekV3ForCausalLM, dtype=torch.bfloat16, avail mem=66.41 GB, mem usage=115.74 GB.
+[2025-11-30 07:44:57 DP0 TP0 EP0] Using KV cache dtype: torch.float8_e4m3fn
+[2025-11-30 07:44:57 DP0 TP0 EP0] KV Cache is allocated. #tokens: 131072, KV size: 4.29 GB
+[2025-11-30 07:44:57 DP0 TP0 EP0] Memory pool end. avail mem=62.00 GB
+[2025-11-30 07:44:57 DP0 TP0 EP0] max_total_num_tokens=131072, chunked_prefill_size=16384, max_prefill_tokens=32768, max_running_requests=192, context_len=4224, available_gpu_mem=61.44 GB
+[2025-11-30 07:44:59 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 64, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 0.00, 
+[2025-11-30 07:45:28 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 64, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 2.23, 
+[2025-11-30 07:45:46 DP0 TP0 EP0] Cache flushed successfully!
+[2025-11-30 07:45:50 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, token usage: 0.00, #running-req: 0, #queue-req: 0, #prealloc-req: 281, #inflight-req: 0, input throughput (token/s): 2.82, 
+[2025-11-30 07:45:53 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.01, #running-req: 0, #queue-req: 265, #prealloc-req: 0, #inflight-req: 0, input throughput (token/s): 371.57, 
+[2025-11-30 07:45:54 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.13, #running-req: 0, #queue-req: 249, #prealloc-req: 0, #inflight-req: 1, input throughput (token/s): 14202.94, 
+[2025-11-30 07:45:55 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.26, #running-req: 0, #queue-req: 233, #prealloc-req: 0, #inflight-req: 17, input throughput (token/s): 38239.47, 
+[2025-11-30 07:45:56 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.36, #running-req: 0, #queue-req: 217, #prealloc-req: 0, #inflight-req: 30, input throughput (token/s): 20498.66, 
+[2025-11-30 07:45:56 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.23, #running-req: 0, #queue-req: 201, #prealloc-req: 0, #inflight-req: 14, input throughput (token/s): 19384.89, 
+[2025-11-30 07:45:57 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.23, #running-req: 0, #queue-req: 185, #prealloc-req: 0, #inflight-req: 13, input throughput (token/s): 20510.46, 
+[2025-11-30 07:45:58 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.22, #running-req: 0, #queue-req: 169, #prealloc-req: 0, #inflight-req: 12, input throughput (token/s): 20316.99, 
+[2025-11-30 07:45:59 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.23, #running-req: 0, #queue-req: 153, #prealloc-req: 0, #inflight-req: 14, input throughput (token/s): 20177.85, 
+[2025-11-30 07:46:00 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.22, #running-req: 0, #queue-req: 137, #prealloc-req: 0, #inflight-req: 12, input throughput (token/s): 20219.14, 
+[2025-11-30 07:46:00 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.22, #running-req: 0, #queue-req: 121, #prealloc-req: 0, #inflight-req: 12, input throughput (token/s): 20488.32, 
+[2025-11-30 07:46:01 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.23, #running-req: 0, #queue-req: 105, #prealloc-req: 0, #inflight-req: 13, input throughput (token/s): 20379.45, 
+[2025-11-30 07:46:02 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.23, #running-req: 0, #queue-req: 89, #prealloc-req: 0, #inflight-req: 13, input throughput (token/s): 20229.37, 
+[2025-11-30 07:46:03 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.23, #running-req: 0, #queue-req: 73, #prealloc-req: 0, #inflight-req: 13, input throughput (token/s): 20421.73, 
+[2025-11-30 07:46:04 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.22, #running-req: 0, #queue-req: 57, #prealloc-req: 0, #inflight-req: 12, input throughput (token/s): 20263.53, 
+[2025-11-30 07:46:04 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.22, #running-req: 0, #queue-req: 41, #prealloc-req: 0, #inflight-req: 12, input throughput (token/s): 20443.61, 
+[2025-11-30 07:46:05 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.23, #running-req: 0, #queue-req: 25, #prealloc-req: 0, #inflight-req: 13, input throughput (token/s): 20422.10, 
+[2025-11-30 07:46:06 DP0 TP0 EP0] Prefill batch, #new-seq: 16, #new-token: 16384, #cached-token: 0, token usage: 0.22, #running-req: 0, #queue-req: 9, #prealloc-req: 0, #inflight-req: 12, input throughput (token/s): 15686.83, 
+[2025-11-30 07:46:07 DP0 TP0 EP0] Prefill batch, #new-seq: 9, #new-token: 9216, #cached-token: 0, token usage: 0.23, #running-req: 0, #queue-req: 0, #prealloc-req: 0, #inflight-req: 13, input throughput (token/s): 57675.34, 
