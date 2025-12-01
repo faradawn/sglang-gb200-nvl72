@@ -1,58 +1,69 @@
-# Scripts for Deploying DeepSeek on GB200 NVL72 with PD and Large Scale EP (Part II)
+# DeepSeek Deployment on GB200 NVL72 with Pipeline Parallelism and Large-Scale Expert Parallelism (Part II)
 
-## Prefill 
+## Prefill Pool Config
+
+**Setup:** 1 node with 4 GPUs  
+**Parallelism:** TP=DP=EP=4  
+**Benchmark:** Batch size 1024, input length 1024 tokens
 
 ![DP attention and EP MoE](./assets/dp-attention-ep-moe.png)
 
-The benchmark is batch size of 1024 and input length of 1024. How to config our params 
+## Request Distribution
 
-For prefill, we use 1 node with 4 GPUs.
+With TP=DP=EP=4, each GPU receives 1024 / 4 = 256 requests per batch. Each request contains 1024 tokens.
 
-With TP=DP=EP=4, and the input request being 1024 requests (one batch), the request division is shown in the graph above. That is, each GPU will receive 1024 / 4 = 256 requests. With the input length of 1024. 
+## Configuration Parameters
 
-How to set the parameters? 
+Key parameters control the prefill pool token allocation. **Note:** These values represent totals across all GPUs, so divide by the number of GPUs to get per-GPU values.
 
-Important configs are 
+### Scenario 1: 16k Tokens Per Forward Pass
 
---max-total-tokens 128k
+If each GPU handles 16k tokens per forward pass:
+- 16k tokens ÷ 1k tokens/request = 16 requests per forward pass
+- 256 requests ÷ 16 requests/pass = 16 forward passes total
 
---max-prefill-tokens 16k
+**Configuration:**
 
---chunked-prefill-size 64k
-
-Here each means the total tokens for the prefill pool. So we need to divide the number of GPUs to get per gpu number. 
-
-IF our GPU is capable of handling 16k tokens per forward pass. Since each request is 1k tokens, we will expect 16 requests in one batch. So expect 256/16 requests = 16 forward passes. 
-
-If we want 16k tokens per forward pass, we need to set the --max6 -prefill-tokens per gpu to be at least and --max-total-tokens per gpu at least 16k. It combines prefill and decode tokens, so set this to a large number. chunked-prefill-size per  gpu should also be greater than 16k. Otherwise, your requests will be chopped into muliple forward pass. Note that chunjked prefill size is aggregated, so if you have 4 GPUs, mutiply 16k by 4 to get 64k.
-
-Results (full detail in exp 01)
-
-```
-ttft: 17.12 s
-input throughput: 61249.67 tok/s
+```bash
+--max-total-tokens 128k       # Total tokens for prefill + decode pools
+--max-prefill-tokens 16k      # Per-GPU: 4k tokens
+--chunked-prefill-size 64k    # Aggregated across GPUs (16k × 4)
 ```
 
-
-Sceniar 2. If found that GPU is not saturated with 16k tokens per forward pass, we can increase it to 32k tokens per forward pass. To do so, we can set 
-
+**Results** (see `exp-01-16k/`):
 ```
---max-total-tokens 128k
-
---max-prefill-tokens 32k
-
---chunked-prefill-size 128k
+TTFT: 17.12s
+Input throughput: 61,249.67 tok/s
 ```
 
+### Scenario 2: 32k Tokens Per Forward Pass
 
-Results is higher throughput (full detail in exp 02)
+If GPU utilization is low at 16k tokens, increase to 32k tokens per forward pass for higher throughput.
+
+**Configuration:**
+
+```bash
+--max-total-tokens 128k       # Total tokens for prefill + decode pools
+--max-prefill-tokens 32k      # Per-GPU: 8k tokens
+--chunked-prefill-size 128k   # Aggregated across GPUs (32k × 4)
 ```
-ttft: 16.68 s
-input throughput: 62862.29 tok/s
+
+**Results** (see `exp-02-32k/`):
+```
+TTFT: 16.68s
+Input throughput: 62,862.29 tok/s
 ```
 
-Here, max running request wouldn't cap us. Since we usually has few running requests, but many queued requests. We can set this to a big number. 
+## Notes
 
-See launch.sh for full script.
+- `--max-total-tokens` combines prefill and decode tokens; set conservatively high
+- `--chunked-prefill-size` is aggregated across all GPUs; too-low values split requests into multiple forward passes
+- `--max-running-requests` typically not a bottleneck since most requests are queued rather than running
 
-Link to blog: https://lmsys.org/blog/2025-09-25-gb200-part-2/
+See `launch.sh` for full deployment script.
+
+**Blog:** https://lmsys.org/blog/2025-09-25-gb200-part-2/
+
+## Decode Pool Config
+
+See https://github.com/shifangx/Scripts-SGLang
