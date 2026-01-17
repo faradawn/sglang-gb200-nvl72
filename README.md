@@ -33,7 +33,7 @@ If each GPU handles 16k tokens per forward pass:
 **Results** (see `exp-01-16k/`):
 ```
 TTFT: 17.12s
-Input throughput: 61,249.67 tok/s
+Input throughput: 20,229 tok/s - 57,675.34 tok/s
 ```
 
 ### Scenario 2: 32k Tokens Per Forward Pass
@@ -51,7 +51,7 @@ If GPU utilization is low at 16k tokens, increase to 32k tokens per forward pass
 **Results** (see `exp-02-32k/`):
 ```
 TTFT: 16.68s
-Input throughput: 62,862.29 tok/s
+Input throughput: 20,403.99 tok/s - 40319.38 tok/s
 ```
 
 ## Notes
